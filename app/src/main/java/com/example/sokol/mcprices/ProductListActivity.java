@@ -9,6 +9,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.sokol.mcprices.api.McApi;
@@ -23,6 +25,7 @@ public class ProductListActivity extends AppCompatActivity {
     McApiInterface mcApi;
     ProductListAdapter productListAdapter;
     ProductsRepository productsRepository;
+    ProgressBar pbUpdating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +37,15 @@ public class ProductListActivity extends AppCompatActivity {
         productsRepository = new ProductsRepository(dbHelper.getWritableDatabase());
         productListAdapter = new ProductListAdapter();
 
+        productListRecyclerView = (RecyclerView) findViewById(R.id.rv_product_list);
+        productListRecyclerView.setAdapter(productListAdapter);
+        pbUpdating = (ProgressBar) findViewById(R.id.pb_updating);
+
         //TODO: try to update firstly
         if(isNetworkOnline()){
+            setLoadingVisible();
             new ProductsUpdater(mcApi, productsRepository, productListAdapter).execute();
+            setDataVisible();
         }
         else{
             productListAdapter.setProducts(productsRepository.getProducts());
@@ -44,11 +53,14 @@ public class ProductListActivity extends AppCompatActivity {
             updateError.show();
         }
 
-        productListRecyclerView = (RecyclerView) findViewById(R.id.rv_product_list);
-        productListRecyclerView.setAdapter(productListAdapter);
         //TODO: count number of column regarding to screen width
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 3);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);
         productListRecyclerView.setLayoutManager(layoutManager);
+    }
+
+    private void setDataVisible() {
+        pbUpdating.setVisibility(View.INVISIBLE);
+        productListRecyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -61,7 +73,9 @@ public class ProductListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == (R.id.acton_refresh)){
             if(isNetworkOnline()){
+                setLoadingVisible();
                 new ProductsUpdater(mcApi, productsRepository, productListAdapter).execute();
+                setDataVisible();
             }
             else{
                 Toast updateError = Toast.makeText(this, "Error during update. Check network connection", Toast.LENGTH_LONG);
@@ -70,6 +84,11 @@ public class ProductListActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setLoadingVisible() {
+        productListRecyclerView.setVisibility(View.INVISIBLE);
+        pbUpdating.setVisibility(View.VISIBLE);
     }
 
     public boolean isNetworkOnline() {

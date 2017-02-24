@@ -25,11 +25,13 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     public class ProductListAdapterViewHolder extends RecyclerView.ViewHolder{
 
         public final TextView textView;
+        public final TextView textPrice;
         public final ImageView imageView;
 
         public ProductListAdapterViewHolder(View itemView) {
             super(itemView);
             this.textView = (TextView) itemView.findViewById(R.id.item_text);
+            this.textPrice = (TextView) itemView.findViewById(R.id.item_price);
             this.imageView = (ImageView) itemView.findViewById(R.id.item_image);
         }
     }
@@ -47,7 +49,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     @Override
     public void onBindViewHolder(ProductListAdapterViewHolder holder, int position) {
-        holder.textView.setText(products.get(position).getName());
+        Product p = products.get(position);
+        holder.textView.setText(p.getName());
+        holder.textPrice.setText(String.valueOf(p.getPrice()) + "\u20BD");
         holder.imageView.setImageResource(R.drawable.big_mac_big);
     }
 
