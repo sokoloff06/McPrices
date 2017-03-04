@@ -11,7 +11,7 @@ import static com.example.sokol.mcprices.data.ProductsContract.*;
 
 public class ProductsDbHelper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "products.db";
 
     public ProductsDbHelper(Context context) {

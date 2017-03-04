@@ -19,7 +19,7 @@ import com.example.sokol.mcprices.data.ProductListAdapter;
 import com.example.sokol.mcprices.data.ProductsDbHelper;
 import com.example.sokol.mcprices.data.ProductsRepository;
 
-public class ProductListActivity extends AppCompatActivity {
+public class ProductListActivity extends AppCompatActivity implements OnUpdateTaskCompleted {
 
     RecyclerView productListRecyclerView;
     McApiInterface mcApi;
@@ -35,33 +35,20 @@ public class ProductListActivity extends AppCompatActivity {
         mcApi = new McApi();
         ProductsDbHelper dbHelper = new ProductsDbHelper(this);
         productsRepository = new ProductsRepository(dbHelper.getWritableDatabase());
-        productListAdapter = new ProductListAdapter();
+        productListAdapter = new ProductListAdapter(this);
 
         productListRecyclerView = (RecyclerView) findViewById(R.id.rv_product_list);
         productListRecyclerView.setAdapter(productListAdapter);
         pbUpdating = (ProgressBar) findViewById(R.id.pb_updating);
 
         //TODO: try to update firstly
-        if(isNetworkOnline()){
-            setLoadingVisible();
-            new ProductsUpdater(mcApi, productsRepository, productListAdapter).execute();
-            setDataVisible();
-        }
-        else{
-            productListAdapter.setProducts(productsRepository.getProducts());
-            Toast updateError = Toast.makeText(this, "Error during update. Check network connection", Toast.LENGTH_LONG);
-            updateError.show();
-        }
+        startUpdate();
 
         //TODO: count number of column regarding to screen width
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);
         productListRecyclerView.setLayoutManager(layoutManager);
     }
 
-    private void setDataVisible() {
-        pbUpdating.setVisibility(View.INVISIBLE);
-        productListRecyclerView.setVisibility(View.VISIBLE);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -72,18 +59,15 @@ public class ProductListActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == (R.id.acton_refresh)){
-            if(isNetworkOnline()){
-                setLoadingVisible();
-                new ProductsUpdater(mcApi, productsRepository, productListAdapter).execute();
-                setDataVisible();
-            }
-            else{
-                Toast updateError = Toast.makeText(this, "Error during update. Check network connection", Toast.LENGTH_LONG);
-                updateError.show();
-            }
+            startUpdate();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setDataVisible() {
+        pbUpdating.setVisibility(View.INVISIBLE);
+        productListRecyclerView.setVisibility(View.VISIBLE);
     }
 
     private void setLoadingVisible() {
@@ -100,5 +84,21 @@ public class ProductListActivity extends AppCompatActivity {
                 activeNetwork.isConnectedOrConnecting();
         return isConnected;
 
+    }
+
+    @Override
+    public void onUpdateCompleted() {
+        setDataVisible();
+    }
+
+    void startUpdate(){
+        if(isNetworkOnline()){
+            setLoadingVisible();
+            new ProductsUpdater(mcApi, productsRepository, productListAdapter, this, this).execute();
+        }
+        else{
+            Toast updateError = Toast.makeText(this, "Error during update. Check network connection", Toast.LENGTH_LONG);
+            updateError.show();
+        }
     }
 }

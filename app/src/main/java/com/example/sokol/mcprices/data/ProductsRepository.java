@@ -72,11 +72,13 @@ public class ProductsRepository implements ProductsRepositoryInterface {
         }
         int productsNameCursorIndex = productsCursor.getColumnIndexOrThrow(ProductsEntries.COLUMN_NAME);
         int productsPriceCursorIndex = productsCursor.getColumnIndexOrThrow(ProductsEntries.COLUMN_PRICE);
+        int productsPicCursorIndex = productsCursor.getColumnIndexOrThrow(ProductsEntries.COLUMN_PIC);
         while (!productsCursor.isAfterLast()){
             products.add(
                     new Product(
                             productsCursor.getString(productsNameCursorIndex),
-                            productsCursor.getInt(productsPriceCursorIndex)
+                            productsCursor.getInt(productsPriceCursorIndex),
+                            productsCursor.getString(productsPicCursorIndex)
                     )
             );
             productsCursor.moveToNext();

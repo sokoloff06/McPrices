@@ -1,6 +1,9 @@
 package com.example.sokol.mcprices.data;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,9 +11,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.sokol.mcprices.ProductListActivity;
 import com.example.sokol.mcprices.R;
 import com.example.sokol.mcprices.entities.Product;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.nio.ByteBuffer;
 import java.util.List;
 
 /**
@@ -18,9 +29,17 @@ import java.util.List;
  */
 
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.ProductListAdapterViewHolder> {
+    private final Context context;
 
+
+    //TODO: sorting by price/category/name
+    //TODO: add categories
 
     private List<Product> products;
+
+    public ProductListAdapter(Context context) {
+        this.context = context;
+    }
 
     public class ProductListAdapterViewHolder extends RecyclerView.ViewHolder{
 
@@ -52,7 +71,28 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         Product p = products.get(position);
         holder.textView.setText(p.getName());
         holder.textPrice.setText(String.valueOf(p.getPrice()) + "\u20BD");
-        holder.imageView.setImageResource(R.drawable.big_mac_big);
+        //TODO: set relevant image
+        //holder.imageView.setImageURI(Uri.parse(p.getPic()));
+        //holder.imageView.setImageResource(R.drawable.big_mac_big);
+        try {
+            String filename = p.getName() + ".png";
+            FileInputStream input = context.openFileInput(filename);
+            int bytesRead = -1;
+            byte[] buffer = new byte[4096];
+
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+
+            while ((bytesRead = input.read(buffer)) != -1){
+                output.write(buffer, 0, bytesRead);
+            }
+            byte[] data = output.toByteArray();
+            Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+            holder.imageView.setImageBitmap(bitmap);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

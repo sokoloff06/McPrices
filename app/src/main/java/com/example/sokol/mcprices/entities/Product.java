@@ -8,13 +8,16 @@ public class Product {
     private int id;
     private String name;
     private int price;
+    private String pic;
 
     public Product() {
     }
 
-    public Product(String name, int price) {
+    public Product(String name, int price, String pic) {
         this.name = name;
         this.price = price;
+        this.pic = pic;
+
     }
 
     public int getId() {
@@ -39,6 +42,14 @@ public class Product {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public String getPic() {
+        return pic;
+    }
+
+    public void setPic(String pic) {
+        this.pic = pic;
     }
 
 }

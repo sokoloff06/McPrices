@@ -17,13 +17,15 @@ public class ProductsContract {
         public static final String TABLE_NAME = "products";
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_PRICE = "price";
+        public static final String COLUMN_PIC = "pic";
 
         public static final String SQL_CREATE_TABLE =
                 "CREATE TABLE " +
                         TABLE_NAME + "(" +
                         _ID             + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         COLUMN_NAME     + " TEXT, " +
-                        COLUMN_PRICE    + " INTEGER);";
+                        COLUMN_PRICE    + " INTEGER, " +
+                        COLUMN_PIC + " TEXT);";
         public static final String SQL_DROP_TABLE =
                 "DROP TABLE IF EXISTS " +
                         TABLE_NAME;
