@@ -44,7 +44,8 @@ public class McApi implements McApiInterface {
         try {
             URL productsUrl = new URL(PRODUCTS_URL);
             Log.i("McApi", "Parsing URL doc...");
-            products = mapper.readValue(productsUrl, new TypeReference<List<Product>>(){});
+            products = mapper.readValue(productsUrl, new TypeReference<List<Product>>() {
+            });
             Log.i("McApi", "doc is parsed");
         } catch (IOException e) {
             e.printStackTrace();

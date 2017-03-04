@@ -22,7 +22,7 @@ public class ProductsRepository implements ProductsRepositoryInterface {
 
     private SQLiteDatabase db;
 
-    public ProductsRepository(SQLiteDatabase db){
+    public ProductsRepository(SQLiteDatabase db) {
         this.db = db;
     }
 
@@ -38,7 +38,7 @@ public class ProductsRepository implements ProductsRepositoryInterface {
                 null,
                 "1"
         );
-        if(!timestampCursor.moveToFirst()){
+        if (!timestampCursor.moveToFirst()) {
             return null;
         }
         int timestampCursorIndex = timestampCursor.getColumnIndexOrThrow(TimestampEntries.COLUMN_TIMESTAMP);
@@ -48,32 +48,34 @@ public class ProductsRepository implements ProductsRepositoryInterface {
     private void setTimestamp(Timestamp timestamp) {
         ContentValues values = new ContentValues();
         values.put(TimestampEntries.COLUMN_TIMESTAMP, timestamp.toString());
-        db.update(
-                TimestampEntries.TABLE_NAME,
-                values,
-                null,
-                null
+        values.put(TimestampEntries._ID, 1);
+        System.out.println("TIMESTAMP ROW ID EDITED: " +
+                db.insert(
+                        TimestampEntries.TABLE_NAME,
+                        null,
+                        values
+                )
         );
     }
 
     @Override
-    public List<Product> getProducts(){
+    public List<Product> getProducts() {
         List<Product> products = new ArrayList<>();
         Cursor productsCursor = db.query(
                 ProductsEntries.TABLE_NAME,
-                new String[]{ProductsEntries.COLUMN_NAME, ProductsEntries.COLUMN_PRICE},
+                new String[]{ProductsEntries.COLUMN_NAME, ProductsEntries.COLUMN_PRICE, ProductsEntries.COLUMN_PIC},
                 null,
                 null,
                 null,
                 null,
                 null);
-        if(!productsCursor.moveToFirst()){
+        if (!productsCursor.moveToFirst()) {
             return null;
         }
         int productsNameCursorIndex = productsCursor.getColumnIndexOrThrow(ProductsEntries.COLUMN_NAME);
         int productsPriceCursorIndex = productsCursor.getColumnIndexOrThrow(ProductsEntries.COLUMN_PRICE);
         int productsPicCursorIndex = productsCursor.getColumnIndexOrThrow(ProductsEntries.COLUMN_PIC);
-        while (!productsCursor.isAfterLast()){
+        while (!productsCursor.isAfterLast()) {
             products.add(
                     new Product(
                             productsCursor.getString(productsNameCursorIndex),
@@ -87,7 +89,7 @@ public class ProductsRepository implements ProductsRepositoryInterface {
     }
 
     @Override
-    public void update(List<Product> products, Timestamp currentTimestamp){
+    public void update(List<Product> products, Timestamp currentTimestamp) {
 
         Log.i("Products Repository", "Starting transaction");
         db.beginTransaction();

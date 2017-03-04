@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import static com.example.sokol.mcprices.data.ProductsContract.*;
 /**
  * Created by sokol on 17.02.2017.
  */

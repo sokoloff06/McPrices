@@ -3,8 +3,8 @@ package com.example.sokol.mcprices;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -41,7 +41,6 @@ public class ProductListActivity extends AppCompatActivity implements OnUpdateTa
         productListRecyclerView.setAdapter(productListAdapter);
         pbUpdating = (ProgressBar) findViewById(R.id.pb_updating);
 
-        //TODO: try to update firstly
         startUpdate();
 
         //TODO: count number of column regarding to screen width
@@ -58,7 +57,7 @@ public class ProductListActivity extends AppCompatActivity implements OnUpdateTa
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == (R.id.acton_refresh)){
+        if (item.getItemId() == (R.id.acton_refresh)) {
             startUpdate();
         }
 
@@ -77,7 +76,7 @@ public class ProductListActivity extends AppCompatActivity implements OnUpdateTa
 
     public boolean isNetworkOnline() {
         ConnectivityManager cm =
-                (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null &&
@@ -91,12 +90,11 @@ public class ProductListActivity extends AppCompatActivity implements OnUpdateTa
         setDataVisible();
     }
 
-    void startUpdate(){
-        if(isNetworkOnline()){
+    void startUpdate() {
+        if (isNetworkOnline()) {
             setLoadingVisible();
             new ProductsUpdater(mcApi, productsRepository, productListAdapter, this, this).execute();
-        }
-        else{
+        } else {
             Toast updateError = Toast.makeText(this, "Error during update. Check network connection", Toast.LENGTH_LONG);
             updateError.show();
         }

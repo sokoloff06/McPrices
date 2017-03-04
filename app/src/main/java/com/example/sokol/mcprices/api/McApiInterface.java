@@ -11,5 +11,6 @@ import java.util.List;
 
 public interface McApiInterface {
     Timestamp getLastUpdatedTimestamp();
+
     List<Product> getProducts();
 }
