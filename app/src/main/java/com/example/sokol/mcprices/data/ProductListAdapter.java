@@ -20,6 +20,7 @@ import java.util.List;
 
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.ProductListAdapterViewHolder> {
     private final Context context;
+    private ProductsRepository repository;
 
 
     //TODO: sorting by price/category/name
@@ -27,22 +28,14 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     private List<Product> products;
 
-    public ProductListAdapter(Context context) {
+    public ProductListAdapter(Context context, ProductsRepository repository) {
         this.context = context;
+        this.repository = repository;
     }
 
-    public class ProductListAdapterViewHolder extends RecyclerView.ViewHolder {
-
-        public final TextView textView;
-        public final TextView textPrice;
-        public final ImageView imageView;
-
-        public ProductListAdapterViewHolder(View itemView) {
-            super(itemView);
-            this.textView = (TextView) itemView.findViewById(R.id.item_text);
-            this.textPrice = (TextView) itemView.findViewById(R.id.item_price);
-            this.imageView = (ImageView) itemView.findViewById(R.id.item_image);
-        }
+    public void loadProducts() {
+        products = repository.getProducts();
+        notifyDataSetChanged();
     }
 
     public void setProducts(List<Product> products) {
@@ -52,7 +45,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     @Override
     public ProductListAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
-        View itemView = LayoutInflater.from(context).inflate(R.layout.product_list_item, parent, false);
+        View itemView = LayoutInflater.from(context).inflate(R.layout.menu_item, parent, false);
         return new ProductListAdapterViewHolder(itemView);
     }
 
@@ -64,9 +57,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         //holder.imageView.setImageURI(Uri.parse(p.getPic()));
         //holder.imageView.setImageResource(R.drawable.big_mac_big);
 
-        String filesdir = context.getFilesDir().getAbsolutePath();
-        String filename = filesdir + "/" + p.getName() + ".png";
-        holder.imageView.setImageURI(Uri.parse(filename));
+        holder.imageView.setImageURI(Uri.parse(p.getPic()));
 
 /*        try {
             String filename = p.getName() + ".png";
@@ -95,6 +86,20 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             return 0;
         } else {
             return products.size();
+        }
+    }
+
+    class ProductListAdapterViewHolder extends RecyclerView.ViewHolder {
+
+        final TextView textView;
+        final TextView textPrice;
+        final ImageView imageView;
+
+        ProductListAdapterViewHolder(View itemView) {
+            super(itemView);
+            this.textView = (TextView) itemView.findViewById(R.id.item_text);
+            this.textPrice = (TextView) itemView.findViewById(R.id.item_price);
+            this.imageView = (ImageView) itemView.findViewById(R.id.item_image);
         }
     }
 }
