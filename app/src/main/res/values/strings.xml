@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">McPrices</string>
-    <string name="refresh">Refresh</string>
+    <string name="refresh" translatable="true">Refresh</string>
+    <string name="network_error" translatable="true">Error during update. Check network connection</string>
+    <string name="title_activity_cart">CartActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>
