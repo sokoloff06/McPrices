@@ -1,4 +1,4 @@
-package com.example.sokol.mcprices;
+package com.example.sokol.mcprices.fragments;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -8,12 +8,12 @@ import android.support.v4.app.FragmentPagerAdapter;
  * Created by sokol on 07.03.2017.
  */
 
-class MenuCartPagerAdapter extends FragmentPagerAdapter {
+public class MenuCartPagerAdapter extends FragmentPagerAdapter {
 
     private MenuFragment menuFragment;
     private CartFragment cartFragment;
 
-    MenuCartPagerAdapter(FragmentManager fm) {
+    public MenuCartPagerAdapter(FragmentManager fm) {
         super(fm);
         menuFragment = new MenuFragment();
         cartFragment = new CartFragment();

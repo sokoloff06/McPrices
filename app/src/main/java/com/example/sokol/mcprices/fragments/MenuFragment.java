@@ -1,4 +1,4 @@
-package com.example.sokol.mcprices;
+package com.example.sokol.mcprices.fragments;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -15,13 +15,16 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.sokol.mcprices.R;
 import com.example.sokol.mcprices.api.McApi;
 import com.example.sokol.mcprices.api.McApiImpl;
+import com.example.sokol.mcprices.background_tasks.CheckLastUpdateTask;
+import com.example.sokol.mcprices.background_tasks.DownloadProductsTask;
 import com.example.sokol.mcprices.data.ProductListAdapter;
 import com.example.sokol.mcprices.data.ProductsDbHelper;
 import com.example.sokol.mcprices.data.ProductsRepositoryImpl;
 
-public class MenuFragment extends Fragment implements ProductsLoader, ProductsDownLoader {
+public class MenuFragment extends Fragment implements ProductsLoader {
 
     McApi mcApi;
     ProductsRepositoryImpl productsRepository;
@@ -106,7 +109,7 @@ public class MenuFragment extends Fragment implements ProductsLoader, ProductsDo
         return super.onOptionsItemSelected(item);
     }
 
-    void startUpdate() {
+    public void startUpdate() {
         new CheckLastUpdateTask(mcApi, productsRepository.getTimestamp(), this).execute();
     }
 

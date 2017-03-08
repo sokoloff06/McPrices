@@ -1,4 +1,4 @@
-package com.example.sokol.mcprices;
+package com.example.sokol.mcprices.fragments;
 
 
 import android.support.v4.app.Fragment;

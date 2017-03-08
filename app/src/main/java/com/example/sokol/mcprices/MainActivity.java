@@ -8,6 +8,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.sokol.mcprices.fragments.MenuCartPagerAdapter;
+import com.example.sokol.mcprices.fragments.MenuFragment;
+
 public class MainActivity extends AppCompatActivity {
 
     /**

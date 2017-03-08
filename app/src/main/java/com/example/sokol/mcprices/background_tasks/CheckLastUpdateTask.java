@@ -1,24 +1,25 @@
-package com.example.sokol.mcprices;
+package com.example.sokol.mcprices.background_tasks;
 
 import android.os.AsyncTask;
 
 import com.example.sokol.mcprices.api.McApi;
+import com.example.sokol.mcprices.fragments.ProductsLoader;
 
 import java.sql.Timestamp;
 
 /**
  * Created by sokol on 08.03.2017.
  */
-class CheckLastUpdateTask extends AsyncTask<Void, Void, Boolean> {
+public class CheckLastUpdateTask extends AsyncTask<Void, Void, Boolean> {
 
     private McApi mcApi;
     private Timestamp localTimestamp;
-    private ProductsDownLoader productsDownLoader;
+    private ProductsLoader productsLoader;
 
-    CheckLastUpdateTask(McApi mcApi, Timestamp localTimestamp, ProductsDownLoader productsDownLoader) {
+    public CheckLastUpdateTask(McApi mcApi, Timestamp localTimestamp, ProductsLoader productsLoader) {
         this.mcApi = mcApi;
         this.localTimestamp = localTimestamp;
-        this.productsDownLoader = productsDownLoader;
+        this.productsLoader = productsLoader;
     }
 
     @Override
@@ -34,6 +35,6 @@ class CheckLastUpdateTask extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean isOutOfDate) {
-        productsDownLoader.loadOrDownload(isOutOfDate);
+        productsLoader.loadOrDownload(isOutOfDate);
     }
 }

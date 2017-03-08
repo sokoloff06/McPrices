@@ -1,4 +1,4 @@
-package com.example.sokol.mcprices;
+package com.example.sokol.mcprices.background_tasks;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -6,6 +6,7 @@ import android.util.Log;
 import com.example.sokol.mcprices.api.McApi;
 import com.example.sokol.mcprices.data.ProductsRepository;
 import com.example.sokol.mcprices.entities.Product;
+import com.example.sokol.mcprices.fragments.ProductsLoader;
 
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -17,7 +18,7 @@ import java.util.List;
 /**
  * Created by sokol on 08.03.2017.
  */
-class DownloadProductsTask extends AsyncTask<Void, Void, Boolean> {
+public class DownloadProductsTask extends AsyncTask<Void, Void, Boolean> {
 
     private static final String TAG = "DownloadProductsTask";
     private static final String BASE_URL = "https://mcdonalds.ru";
