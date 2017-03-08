@@ -20,7 +20,7 @@ import java.util.List;
 class DownloadProductsTask extends AsyncTask<Void, Void, Boolean> {
 
     private static final String TAG = "DownloadProductsTask";
-    private static final String BASE_URL = "http://mcdonalds.ru";
+    private static final String BASE_URL = "https://mcdonalds.ru";
 
     private McApi mcApi;
     private ProductsRepository repository;
