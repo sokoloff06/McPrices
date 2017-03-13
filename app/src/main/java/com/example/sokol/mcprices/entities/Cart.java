@@ -30,6 +30,9 @@ public class Cart {
         }
     }
 
+    public void delete(ProductRecord pr) {
+        savedProducts.remove(pr.getId());
+    }
     public void remove(Product product) {
         Integer newProductId = product.getId();
         ProductRecord savedProduct = savedProducts.get(newProductId);
@@ -71,9 +74,10 @@ public class Cart {
     public void remove(ProductRecord productRecord) {
         Integer newProductId = productRecord.getId();
         ProductRecord savedProduct = savedProducts.get(newProductId);
-        if (savedProduct != null) {
-            savedProduct.remove();
+        if (savedProduct.getCount() == 1) {
+            delete(savedProduct);
         }
+        savedProduct.remove();
     }
 
     public static class ProductRecord {

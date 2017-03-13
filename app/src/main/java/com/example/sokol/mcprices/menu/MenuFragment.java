@@ -68,6 +68,7 @@ public class MenuFragment extends Fragment implements ProductsDisplayer {
         //TODO: count number of column regarding to screen width
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         productListRecyclerView.setLayoutManager(layoutManager);
+        //TODO: BUG! Sometimes No adapter attached; skipping layout
         productListRecyclerView.setAdapter(productListAdapter);
 
         /*setHasOptionsMenu(true);*/
