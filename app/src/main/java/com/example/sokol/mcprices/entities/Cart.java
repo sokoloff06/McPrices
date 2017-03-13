@@ -1,6 +1,7 @@
 package com.example.sokol.mcprices.entities;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -9,7 +10,7 @@ import java.util.Map;
 
 public class Cart {
 
-    private Map<Integer, ProductRecord> savedProducts;
+    private Map<Integer, ProductRecord> savedProducts = new HashMap<>();
 
     public Map<Integer, ProductRecord> getProducts() {
         return savedProducts;
@@ -23,7 +24,7 @@ public class Cart {
         Integer newProductId = product.getId();
         ProductRecord savedProduct = savedProducts.get(newProductId);
         if (savedProduct == null) {
-            savedProducts.put(newProductId, new ProductRecord(1, product.getPrice(), product.getName(), product.getPic()));
+            savedProducts.put(newProductId, new ProductRecord(newProductId, 1, product.getPrice(), product.getName(), product.getPic()));
         } else {
             savedProduct.add();
         }
@@ -40,24 +41,63 @@ public class Cart {
     public int getSum() {
         Collection<ProductRecord> cartProducts = savedProducts.values();
         int sum = 0;
+        if (cartProducts.isEmpty()) {
+            return sum;
+        }
         for (ProductRecord pr : cartProducts) {
             sum += pr.count * pr.price;
         }
         return sum;
     }
 
-    private static class ProductRecord {
+    public void set(ProductRecord newProductRecord) {
+        savedProducts.get(newProductRecord.getId()).setCount(newProductRecord.getCount());
+    }
 
+    public void add(ProductRecord productRecord) {
+        Integer newProductId = productRecord.getId();
+        ProductRecord savedProduct = savedProducts.get(newProductId);
+        if (savedProduct == null) {
+            savedProducts.put(newProductId, productRecord);
+        } else {
+            savedProduct.add();
+        }
+    }
+
+    public void remove(int index) {
+        savedProducts.remove(0);
+    }
+
+    public void remove(ProductRecord productRecord) {
+        Integer newProductId = productRecord.getId();
+        ProductRecord savedProduct = savedProducts.get(newProductId);
+        if (savedProduct != null) {
+            savedProduct.remove();
+        }
+    }
+
+    public static class ProductRecord {
+
+        private int id;
         private int count;
         private int price;
         private String name;
         private String pic;
 
-        ProductRecord(int count, int price, String name, String pic) {
+        public ProductRecord(int id, int count, int price, String name, String pic) {
+            this.id = id;
             this.count = count;
             this.price = price;
             this.name = name;
             this.pic = pic;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
         }
 
         void add() {
@@ -68,6 +108,38 @@ public class Cart {
             if (count != 0) {
                 count--;
             }
+        }
+
+        public int getCount() {
+            return count;
+        }
+
+        public void setCount(int count) {
+            this.count = count;
+        }
+
+        public int getPrice() {
+            return price;
+        }
+
+        public void setPrice(int price) {
+            this.price = price;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getPic() {
+            return pic;
+        }
+
+        public void setPic(String pic) {
+            this.pic = pic;
         }
     }
 }

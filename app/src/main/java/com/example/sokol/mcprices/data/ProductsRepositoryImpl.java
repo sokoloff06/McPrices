@@ -20,6 +20,8 @@ import java.util.List;
 
 public class ProductsRepositoryImpl implements ProductsRepository {
 
+    //TODO: open Database HERE
+
     private static final String TAG = "Products Repository";
     private SQLiteDatabase db;
 
@@ -82,21 +84,24 @@ public class ProductsRepositoryImpl implements ProductsRepository {
         List<Product> products = new ArrayList<>();
         Cursor productsCursor = db.query(
                 ProductsEntries.TABLE_NAME,
-                new String[]{ProductsEntries.COLUMN_NAME, ProductsEntries.COLUMN_PRICE, ProductsEntries.COLUMN_PIC},
+                new String[]{ProductsEntries._ID, ProductsEntries.COLUMN_NAME, ProductsEntries.COLUMN_PRICE, ProductsEntries.COLUMN_PIC},
                 null,
                 null,
                 null,
                 null,
                 null);
         if (!productsCursor.moveToFirst()) {
+            productsCursor.close();
             return null;
         }
+        int productsIdCursorIndex = productsCursor.getColumnIndex(ProductsEntries._ID);
         int productsNameCursorIndex = productsCursor.getColumnIndexOrThrow(ProductsEntries.COLUMN_NAME);
         int productsPriceCursorIndex = productsCursor.getColumnIndexOrThrow(ProductsEntries.COLUMN_PRICE);
         int productsPicCursorIndex = productsCursor.getColumnIndexOrThrow(ProductsEntries.COLUMN_PIC);
         while (!productsCursor.isAfterLast()) {
             products.add(
                     new Product(
+                            productsCursor.getInt(productsIdCursorIndex),
                             productsCursor.getString(productsNameCursorIndex),
                             productsCursor.getInt(productsPriceCursorIndex),
                             productsCursor.getString(productsPicCursorIndex)
@@ -104,6 +109,7 @@ public class ProductsRepositoryImpl implements ProductsRepository {
             );
             productsCursor.moveToNext();
         }
+        productsCursor.close();
         return products;
     }
 

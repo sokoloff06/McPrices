@@ -6,7 +6,7 @@ import android.util.Log;
 import com.example.sokol.mcprices.api.McApi;
 import com.example.sokol.mcprices.data.ProductsRepository;
 import com.example.sokol.mcprices.entities.Product;
-import com.example.sokol.mcprices.fragments.ProductsLoader;
+import com.example.sokol.mcprices.menu.ProductsDisplayer;
 
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -26,13 +26,13 @@ public class DownloadProductsTask extends AsyncTask<Void, Void, Boolean> {
     private McApi mcApi;
     private ProductsRepository repository;
     private String filesDir;
-    private ProductsLoader productsLoader;
+    private ProductsDisplayer productsDisplayer;
 
-    public DownloadProductsTask(McApi mcApi, ProductsRepository repository, String filesDir, ProductsLoader productsLoader) {
+    public DownloadProductsTask(McApi mcApi, ProductsRepository repository, String filesDir, ProductsDisplayer productsDisplayer) {
         this.mcApi = mcApi;
         this.repository = repository;
         this.filesDir = filesDir;
-        this.productsLoader = productsLoader;
+        this.productsDisplayer = productsDisplayer;
     }
 
     @Override
@@ -95,9 +95,9 @@ public class DownloadProductsTask extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected void onPostExecute(Boolean IsLoadSucessful) {
         if (IsLoadSucessful) {
-            productsLoader.load();
+            productsDisplayer.load();
         } else {
-            productsLoader.loadError();
+            productsDisplayer.loadError();
         }
     }
 }

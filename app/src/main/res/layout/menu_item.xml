@@ -2,13 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?selectableItemBackground"
+    android:clickable="true"
     android:orientation="vertical"
     android:padding="8dp">
 
     <ImageView
         android:id="@+id/item_image"
         android:layout_width="match_parent"
-        android:layout_height="150dp"/>
+        android:layout_height="150dp" />
 
     <TextView
         android:id="@+id/item_text"
@@ -25,9 +27,10 @@
         android:id="@+id/item_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:background="@drawable/price_cirle"
-        android:elevation="6dp"
+        android:elevation="12dp"
         android:gravity="center"
         android:textColor="#ffffff"
         android:textStyle="bold" />
