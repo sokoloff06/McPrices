@@ -17,3 +17,11 @@ Finally main functionality is implemented!
 </ul>
 <img src=https://github.com/sokoloff06/McPrices/blob/second_screen_addition/demo/menu.png width="400"/>
 <img src=https://github.com/sokoloff06/McPrices/blob/second_screen_addition/demo/cart.png width="400"/>
+
+<b>Plans:</b>
+<ul>
+<li>Search and sorting in the menu</li>
+<li>Choosing sizes of some kinds of products(drinks, fries)</li>
+<li>Visual enhancements</li>
+<li>Always bugs fixing...</li>
+</ul>
