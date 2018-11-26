@@ -65,6 +65,7 @@ public class DownloadProductsTask extends AsyncTask<Void, Void, Boolean> {
                 //Input
                 URL url = new URL(BASE_URL + p.getPic());
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                //TODO: If image URL is not valid anymore, process is crashing, need to put a placeholder image and rethink the logic
                 InputStream input = connection.getInputStream();
 
                 //Buffer

@@ -5,14 +5,20 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.TextView;
 
+import com.appsflyer.AppsFlyerConversionListener;
+import com.appsflyer.AppsFlyerLib;
 import com.example.sokol.mcprices.cart.CartAdapter;
 import com.example.sokol.mcprices.cart.CartHandler;
 import com.example.sokol.mcprices.entities.Cart;
 
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity implements CartHandler {
 
+    private static final String AF_DEV_KEY = "4UGrDF4vFvPLbHq5bXtCza";
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -43,11 +49,37 @@ public class MainActivity extends AppCompatActivity implements CartHandler {
         pagerAdapter = new MenuCartPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        viewPager = (ViewPager) findViewById(R.id.container);
+        viewPager = findViewById(R.id.container);
         viewPager.setAdapter(pagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs_selector);
+        TabLayout tabLayout = findViewById(R.id.tabs_selector);
         tabLayout.setupWithViewPager(viewPager);
+
+        AppsFlyerConversionListener conversionListener = new AppsFlyerConversionListener() {
+            @Override
+            public void onInstallConversionDataLoaded(Map<String, String> map) {
+                for (String attrName : map.keySet()) {
+                    Log.d(AppsFlyerLib.LOG_TAG, "onInstallConversionDataLoaded attribute: " + attrName + " = " + map.get(attrName));
+                }
+            }
+
+            @Override
+            public void onInstallConversionFailure(String s) {
+
+            }
+
+            @Override
+            public void onAppOpenAttribution(Map<String, String> map) {
+
+            }
+
+            @Override
+            public void onAttributionFailure(String s) {
+
+            }
+        };
+        AppsFlyerLib.getInstance().init(AF_DEV_KEY, conversionListener, getApplicationContext());
+        AppsFlyerLib.getInstance().startTracking(getApplication());
     }
 
 
@@ -76,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements CartHandler {
 
     @Override
     public void onDataHasChanged() {
-        TextView sumTextView = (TextView) findViewById(R.id.sum_text_view);
+        TextView sumTextView = findViewById(R.id.sum_text_view);
         sumTextView.setText(String.valueOf(cart.getSum()) + " \u20BD");
     }
 

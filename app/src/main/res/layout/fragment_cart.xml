@@ -46,4 +46,10 @@
         android:layout_height="wrap_content"
         android:background="#ffffff" />
 
+    <Button
+        android:id="@+id/sendPurchaseButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Send Purchase Data to AF" />
+
 </LinearLayout>

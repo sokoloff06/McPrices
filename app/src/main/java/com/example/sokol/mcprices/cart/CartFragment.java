@@ -10,10 +10,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.appsflyer.AFInAppEventParameterName;
+import com.appsflyer.AFInAppEventType;
+import com.appsflyer.AppsFlyerLib;
 import com.example.sokol.mcprices.R;
 import com.example.sokol.mcprices.entities.Cart;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by sokol on 07.03.2017.
@@ -26,6 +33,7 @@ public class CartFragment extends Fragment {
     CartAdapter cartAdapter;
     CartHandler cartHandler;
     Cart cart;
+    Button sendPurchaseButton;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,12 +59,22 @@ public class CartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_cart, container, false);
-        sumTextView = (TextView) rootView.findViewById(R.id.sum_text_view);
-        cartRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_cart);
+        sumTextView = rootView.findViewById(R.id.sum_text_view);
+        cartRecyclerView = rootView.findViewById(R.id.rv_cart);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         cartRecyclerView.setLayoutManager(layoutManager);
         cartRecyclerView.setAdapter(cartAdapter);
-
+        sendPurchaseButton = rootView.findViewById(R.id.sendPurchaseButton);
+        sendPurchaseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Integer sum = cart.getSum();
+                Map<String, Object> purchase = new HashMap<>();
+                purchase.put(AFInAppEventParameterName.REVENUE, sum);
+                purchase.put(AFInAppEventParameterName.CURRENCY, "RUB");
+                AppsFlyerLib.getInstance().trackEvent(getContext(), AFInAppEventType.PURCHASE, purchase);
+            }
+        });
         return rootView;
     }
 }
