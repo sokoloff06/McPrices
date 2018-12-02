@@ -1,11 +1,11 @@
 package com.example.sokol.mcprices;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-
 import com.example.sokol.mcprices.cart.CartFragment;
 import com.example.sokol.mcprices.menu.MenuFragment;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 
 /**
  * Created by sokol on 07.03.2017.

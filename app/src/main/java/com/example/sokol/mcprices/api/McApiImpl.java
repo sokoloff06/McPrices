@@ -1,6 +1,5 @@
 package com.example.sokol.mcprices.api;
 
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.example.sokol.mcprices.entities.Product;
@@ -11,6 +10,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.util.List;
+
+import androidx.annotation.Nullable;
 
 /**
  * Created by sokol on 17.02.2017.

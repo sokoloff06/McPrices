@@ -2,15 +2,6 @@ package com.example.sokol.mcprices;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -20,20 +11,32 @@ import com.appsflyer.AppsFlyerLib;
 import com.example.sokol.mcprices.cart.CartAdapter;
 import com.example.sokol.mcprices.cart.CartHandler;
 import com.example.sokol.mcprices.entities.Cart;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.Map;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 public class MainActivity extends AppCompatActivity implements CartHandler {
 
     private static final String AF_DEV_KEY = "4UGrDF4vFvPLbHq5bXtCza";
     NavigationView navigationView;
     /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
+     * The {@link PagerAdapter} that will provide
      * fragments for each of the sections. We use a
      * {@link FragmentPagerAdapter} derivative, which will keep every
      * loaded fragment in memory. If this becomes too memory intensive, it
      * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
+     * {@link FragmentStatePagerAdapter}.
      */
     private MenuCartPagerAdapter pagerAdapter;
     /**
@@ -48,20 +51,6 @@ public class MainActivity extends AppCompatActivity implements CartHandler {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        cart = new Cart();
-        cartAdapter = new CartAdapter(this);
-
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        pagerAdapter = new MenuCartPagerAdapter(getSupportFragmentManager());
-
-        // Set up the ViewPager with the sections adapter.
-        viewPager = findViewById(R.id.container);
-        viewPager.setAdapter(pagerAdapter);
-
-        TabLayout tabLayout = findViewById(R.id.tabs_selector);
-        tabLayout.setupWithViewPager(viewPager);
 
         navDrawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
@@ -96,11 +85,23 @@ public class MainActivity extends AppCompatActivity implements CartHandler {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
+        //TODO: understand why the code below is being executed after I snoozed the app (switched to another app for example)
+
         AppsFlyerConversionListener conversionListener = new AppsFlyerConversionListener() {
             @Override
             public void onInstallConversionDataLoaded(Map<String, String> map) {
                 for (String attrName : map.keySet()) {
                     Log.d(AppsFlyerLib.LOG_TAG, "onInstallConversionDataLoaded attribute: " + attrName + " = " + map.get(attrName));
+                }
+                Log.d(AppsFlyerLib.LOG_TAG, "AppsflyerID:" + AppsFlyerLib.getInstance().getAppsFlyerUID(getApplicationContext()));
+                String deepLink = map.get("af_web_dp");
+                boolean is_first_launch = Boolean.parseBoolean(map.get("is_first_launch"));
+                if (is_first_launch) {
+                    switch (deepLink) {
+                        case "http://mcprices.com/sale":
+                            Intent intent = new Intent(getApplicationContext(), SaleActivity.class);
+                            startActivity(intent);
+                    }
                 }
             }
 
@@ -119,12 +120,24 @@ public class MainActivity extends AppCompatActivity implements CartHandler {
 
             }
         };
-
         String senderId = "145246440594"; /* A.K.A Project Number */
         AppsFlyerLib.getInstance().enableUninstallTracking(senderId);
-
         AppsFlyerLib.getInstance().init(AF_DEV_KEY, conversionListener, getApplicationContext());
         AppsFlyerLib.getInstance().startTracking(getApplication());
+
+        cart = new Cart();
+        cartAdapter = new CartAdapter(this);
+
+        // Create the adapter that will return a fragment for each of the three
+        // primary sections of the activity.
+        pagerAdapter = new MenuCartPagerAdapter(getSupportFragmentManager());
+
+        // Set up the ViewPager with the sections adapter.
+        viewPager = findViewById(R.id.container);
+        viewPager.setAdapter(pagerAdapter);
+
+        TabLayout tabLayout = findViewById(R.id.tabs_selector);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     @Override
@@ -142,7 +155,6 @@ public class MainActivity extends AppCompatActivity implements CartHandler {
         super.onResume();
         navigationView.setCheckedItem(R.id.nav_main);
     }
-
 
 
     @Override

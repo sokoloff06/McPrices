@@ -2,8 +2,6 @@ package com.example.sokol.mcprices.menu;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.v7.util.SortedList;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +13,9 @@ import com.example.sokol.mcprices.data.ProductsRepository;
 import com.example.sokol.mcprices.entities.Product;
 
 import java.util.List;
+
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SortedList;
 
 /**
  * Created by sokol on 20.02.2017.
@@ -117,9 +118,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
         ProductListAdapterViewHolder(final View itemView) {
             super(itemView);
-            this.textView = (TextView) itemView.findViewById(R.id.item_text);
-            this.textPrice = (TextView) itemView.findViewById(R.id.item_price);
-            this.imageView = (ImageView) itemView.findViewById(R.id.item_image);
+            this.textView = itemView.findViewById(R.id.item_text);
+            this.textPrice = itemView.findViewById(R.id.item_price);
+            this.imageView = itemView.findViewById(R.id.item_image);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

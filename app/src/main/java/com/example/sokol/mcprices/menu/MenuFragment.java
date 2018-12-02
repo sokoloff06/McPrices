@@ -4,11 +4,6 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +20,12 @@ import com.example.sokol.mcprices.cart.CartHandler;
 import com.example.sokol.mcprices.data.ProductsDbHelper;
 import com.example.sokol.mcprices.data.ProductsRepositoryImpl;
 import com.example.sokol.mcprices.entities.Cart;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 public class MenuFragment extends Fragment implements ProductsDisplayer {
 
@@ -54,17 +55,17 @@ public class MenuFragment extends Fragment implements ProductsDisplayer {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_menu, container, false);
 
-        pbUpdating = (ProgressBar) rootView.findViewById(R.id.pb_updating);
-        swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swiperefresh);
+        pbUpdating = rootView.findViewById(R.id.pb_updating);
+        swipeRefreshLayout = rootView.findViewById(R.id.swiperefresh);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 startUpdate();
             }
         });
-        itemPrice = (TextView) rootView.findViewById(R.id.item_price);
+        itemPrice = rootView.findViewById(R.id.item_price);
 
-        productListRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_product_list);
+        productListRecyclerView = rootView.findViewById(R.id.rv_product_list);
         //TODO: count number of column regarding to screen width
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         productListRecyclerView.setLayoutManager(layoutManager);

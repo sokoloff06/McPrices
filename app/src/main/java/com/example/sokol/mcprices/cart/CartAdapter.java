@@ -2,7 +2,6 @@ package com.example.sokol.mcprices.cart;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -18,6 +17,8 @@ import com.example.sokol.mcprices.entities.Cart;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by sokol on 08.03.2017.
@@ -77,11 +78,11 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartItemViewHo
 
         public CartItemViewHolder(View itemView) {
             super(itemView);
-            this.pictureImageView = (ImageView) itemView.findViewById(R.id.cart_item_picture_image_view);
-            this.nameTextView = (TextView) itemView.findViewById(R.id.cart_item_name_text_view);
-            this.countEditText = (EditText) itemView.findViewById(R.id.cart_item_count_edit_text);
-            this.buttonRemove = (Button) itemView.findViewById(R.id.button_remove);
-            this.buttonAdd = (Button) itemView.findViewById(R.id.button_add);
+            this.pictureImageView = itemView.findViewById(R.id.cart_item_picture_image_view);
+            this.nameTextView = itemView.findViewById(R.id.cart_item_name_text_view);
+            this.countEditText = itemView.findViewById(R.id.cart_item_count_edit_text);
+            this.buttonRemove = itemView.findViewById(R.id.button_remove);
+            this.buttonAdd = itemView.findViewById(R.id.button_add);
 
             buttonAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
