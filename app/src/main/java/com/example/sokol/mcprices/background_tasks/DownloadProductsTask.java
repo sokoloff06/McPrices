@@ -17,6 +17,23 @@ import java.util.List;
 
 /**
  * Created by sokol on 08.03.2017.
+ *
+ *
+ * Data model:
+ * [
+ *   {
+ *     "id": 1,
+ *     "name": "Apples",
+ *     "price": 100,
+ *     "pic": "product_images/1"
+ *   },
+ *   {
+ *     "id": 1,
+ *     "name": "Bananas",
+ *     "price": 100,
+ *     "pic": "product_images/1"
+ *   }
+ * ]
  */
 public class DownloadProductsTask extends AsyncTask<Void, Void, Boolean> {
 

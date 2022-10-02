@@ -6,8 +6,13 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.appsflyer.AppsFlyerConversionListener;
-import com.appsflyer.AppsFlyerLib;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.viewpager.widget.ViewPager;
+
 import com.example.sokol.mcprices.cart.CartAdapter;
 import com.example.sokol.mcprices.cart.CartHandler;
 import com.example.sokol.mcprices.entities.Cart;
@@ -15,16 +20,6 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.Map;
-
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 
 public class MainActivity extends AppCompatActivity implements CartHandler {
 
@@ -65,13 +60,13 @@ public class MainActivity extends AppCompatActivity implements CartHandler {
                         navDrawer.closeDrawers();
 
                         int itemId = menuItem.getItemId();
-                        switch (itemId) {
-                            case R.id.nav_sale:
-                                Intent intent = new Intent(getApplicationContext(), SaleActivity.class);
-                                startActivity(intent);
-                                return true;
-                        }
-                        // Add code here to update the UI based on the item selected
+//                        switch (itemId) {
+//                            case R.id.nav_sale:
+//                                Intent intent = new Intent(getApplicationContext(), SaleActivity.class);
+//                                startActivity(intent);
+//                                return true;
+//                        }
+//                        // Add code here to update the UI based on the item selected
                         // For example, swap UI fragments here
 
                         return true;
@@ -84,46 +79,6 @@ public class MainActivity extends AppCompatActivity implements CartHandler {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
-
-        //TODO: understand why the code below is being executed after I snoozed the app (switched to another app for example)
-
-        AppsFlyerConversionListener conversionListener = new AppsFlyerConversionListener() {
-            @Override
-            public void onInstallConversionDataLoaded(Map<String, String> map) {
-                for (String attrName : map.keySet()) {
-                    Log.d(AppsFlyerLib.LOG_TAG, "onInstallConversionDataLoaded attribute: " + attrName + " = " + map.get(attrName));
-                }
-                Log.d(AppsFlyerLib.LOG_TAG, "AppsflyerID:" + AppsFlyerLib.getInstance().getAppsFlyerUID(getApplicationContext()));
-                String deepLink = map.get("af_web_dp");
-                boolean is_first_launch = Boolean.parseBoolean(map.get("is_first_launch"));
-                if (is_first_launch) {
-                    switch (deepLink) {
-                        case "http://mcprices.com/sale":
-                            Intent intent = new Intent(getApplicationContext(), SaleActivity.class);
-                            startActivity(intent);
-                    }
-                }
-            }
-
-            @Override
-            public void onInstallConversionFailure(String s) {
-
-            }
-
-            @Override
-            public void onAppOpenAttribution(Map<String, String> map) {
-
-            }
-
-            @Override
-            public void onAttributionFailure(String s) {
-
-            }
-        };
-        String senderId = "145246440594"; /* A.K.A Project Number */
-        AppsFlyerLib.getInstance().enableUninstallTracking(senderId);
-        AppsFlyerLib.getInstance().init(AF_DEV_KEY, conversionListener, getApplicationContext());
-        AppsFlyerLib.getInstance().startTracking(getApplication());
 
         cart = new Cart();
         cartAdapter = new CartAdapter(this);

@@ -19,7 +19,7 @@ import androidx.annotation.Nullable;
 
 public class McApiImpl implements McApi {
 
-    private static final String BASE_URL = "http://mc-prices-server.herokuapp.com";
+    private static final String BASE_URL = "https://mc-prices-server.herokuapp.com";
     private static final String PRODUCTS_URL = BASE_URL + "/products";
     private static final String PRODUCTS_UPDATE_URL = PRODUCTS_URL + "/last-update";
     private static final String TAG = "McApiImpl";
