@@ -47,10 +47,18 @@
         android:layout_height="wrap_content"
         android:background="#ffffff" />
 
+    <EditText
+        android:id="@+id/transaction_id_field"
+        android:hint="@string/transaction_id_input_field"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints="Transaction ID (Optional)"
+        android:inputType="text" />
+
     <Button
         android:id="@+id/sendPurchaseButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Send Purchase Data to AF" />
+        android:text="@string/buy_text" />
 
 </LinearLayout>

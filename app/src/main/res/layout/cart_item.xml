@@ -27,7 +27,7 @@
         android:layout_height="35dp"
         android:layout_gravity="center_vertical"
         android:layout_margin="4dp"
-        android:background="@drawable/price_cirle"
+        android:background="@drawable/price_circle"
         android:text="−"
         android:textColor="#fff" />
 
@@ -48,7 +48,7 @@
         android:layout_height="35dp"
         android:layout_gravity="center_vertical"
         android:layout_margin="4dp"
-        android:background="@drawable/price_cirle"
+        android:background="@drawable/price_circle"
         android:text="+"
         android:textColor="#fff" />
 

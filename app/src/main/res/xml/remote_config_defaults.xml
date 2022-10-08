@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<defaults>
+  <entry>
+    <key>bg_price</key>
+<!--    dark blue-->
+    <value>#2D3A4A</value>
+  </entry>
+  <entry>
+    <key>bg_color</key>
+<!--    light grey-->
+    <value>#D6D6D6</value>
+  </entry>
+  <entry>
+    <key>btn_buy_color</key>
+    <!--    light grey-->
+    <value>#D6D6D6</value>
+  </entry>
+</defaults>
