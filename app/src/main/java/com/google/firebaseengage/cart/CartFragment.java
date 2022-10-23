@@ -11,18 +11,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
-import com.google.firebaseengage.R;
-import com.google.firebaseengage.entities.Cart;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebaseengage.R;
+import com.google.firebaseengage.entities.Cart;
 
 /**
  * Created by sokol on 07.03.2017.
@@ -75,7 +72,7 @@ public class CartFragment extends Fragment {
             if (ctx != null) {
                 Bundle eventParams = new Bundle();
                 double sum = cart.getSum();
-                EditText editText = (EditText) rootView.findViewById(R.id.transaction_id_field);
+                EditText editText = rootView.findViewById(R.id.transaction_id_field);
                 eventParams.putString(FirebaseAnalytics.Param.CURRENCY, "EUR");
                 eventParams.putDouble(FirebaseAnalytics.Param.VALUE, sum);
                 eventParams.putString(FirebaseAnalytics.Param.TRANSACTION_ID, editText.getText().toString());

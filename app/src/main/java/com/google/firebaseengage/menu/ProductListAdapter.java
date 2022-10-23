@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.SortedList;
 
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.ProductListAdapterViewHolder> {
 
+    public static final String PRICE_COLOR_KEY = "bg_price";
     //TODO: sorting by price/category/name
     private ProductsRepository repository;
     private ProductsDisplayer productsDisplayer;
@@ -82,7 +83,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     }
 
     public void loadProducts() {
-        priceColor = FirebaseRemoteConfig.getInstance().getString("bg_price");
+        priceColor = FirebaseRemoteConfig.getInstance().getString(PRICE_COLOR_KEY);
         Log.d("ENGAGE-DEBUG", "Using bg_price of " + priceColor + " from Remote Config");
         List<Product> products = repository.getProducts();
         productSortedListByName.addAll(products);

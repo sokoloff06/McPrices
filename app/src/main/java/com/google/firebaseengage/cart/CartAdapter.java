@@ -84,20 +84,14 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartItemViewHo
             this.buttonRemove = itemView.findViewById(R.id.button_remove);
             this.buttonAdd = itemView.findViewById(R.id.button_add);
 
-            buttonAdd.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    cart.add(getProductRecord(getAdapterPosition()));
-                    loadData();
-                }
+            buttonAdd.setOnClickListener(v -> {
+                cart.add(getProductRecord(getAdapterPosition()));
+                loadData();
             });
 
-            buttonRemove.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    cart.remove(getProductRecord(getAdapterPosition()));
-                    loadData();
-                }
+            buttonRemove.setOnClickListener(v -> {
+                cart.remove(getProductRecord(getAdapterPosition()));
+                loadData();
             });
 
             countEditText.addTextChangedListener(new TextWatcher() {

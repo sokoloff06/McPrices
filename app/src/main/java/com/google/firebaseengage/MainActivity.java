@@ -1,25 +1,18 @@
 package com.google.firebaseengage;
 
 import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.Shape;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.firebaseengage.cart.CartAdapter;
@@ -30,6 +23,7 @@ import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity implements CartHandler {
 
+    public static final String BG_COLOR_KEY = "bg_color";
     NavigationView navigationView;
     private Cart cart;
     private CartAdapter cartAdapter;
@@ -114,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements CartHandler {
     protected void onResume() {
         super.onResume();
         navigationView.setCheckedItem(R.id.nav_main);
-        String color = remoteConfig.getString("bg_color");
+        String color = remoteConfig.getString(BG_COLOR_KEY);
         Log.d("ENGAGE-DEBUG", "Using bg_color of " + color + " from Remote Config");
         viewPager.setBackgroundColor(Color.parseColor(color));
     }
