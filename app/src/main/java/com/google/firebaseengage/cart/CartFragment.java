@@ -4,6 +4,7 @@ package com.google.firebaseengage.cart;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,6 +29,7 @@ import com.google.firebaseengage.entities.Cart;
 
 public class CartFragment extends Fragment {
 
+    public static final String PURCHASE_BTN_COLOR = "btn_buy_color";
     RecyclerView cartRecyclerView;
     TextView sumTextView;
     CartAdapter cartAdapter;
@@ -37,18 +40,25 @@ public class CartFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         cartAdapter = cartHandler.getCartAdapter();
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onResume() {
+        super.onResume();
+        String color = FirebaseRemoteConfig.getInstance().getString(PURCHASE_BTN_COLOR);
+        Log.d("ENGAGE-DEBUG", "Using btn_buy_color of " + color + " from Remote Config");
+        sendPurchaseButton.setBackgroundColor(Color.parseColor(color));
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try {
             cartHandler = (CartHandler) context;
             cart = cartHandler.getCart();
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() +
+            throw new ClassCastException(context +
                     " must implement CartHandler interface");
         }
     }
@@ -63,10 +73,6 @@ public class CartFragment extends Fragment {
         cartRecyclerView.setLayoutManager(layoutManager);
         cartRecyclerView.setAdapter(cartAdapter);
         sendPurchaseButton = rootView.findViewById(R.id.sendPurchaseButton);
-
-        String color =FirebaseRemoteConfig.getInstance().getString("btn_buy_color");
-        sendPurchaseButton.setBackgroundColor(Color.parseColor(color));
-
         sendPurchaseButton.setOnClickListener(view -> {
             Context ctx = getContext();
             if (ctx != null) {
