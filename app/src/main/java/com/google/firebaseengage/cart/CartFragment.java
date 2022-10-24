@@ -46,6 +46,7 @@ public class CartFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        // RC Demo 4: Purchase button color - personalization
         String color = FirebaseRemoteConfig.getInstance().getString(PURCHASE_BTN_COLOR);
         Log.d("ENGAGE-DEBUG", "Using btn_buy_color of " + color + " from Remote Config");
         sendPurchaseButton.setBackgroundColor(Color.parseColor(color));

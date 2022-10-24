@@ -1,7 +1,7 @@
 package com.google.firebaseengage;
 
 import com.google.firebaseengage.cart.CartFragment;
-import com.google.firebaseengage.menu.MenuFragment;
+import com.google.firebaseengage.catalog.CatalogFragment;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -12,12 +12,12 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
  * Created by sokol on 07.03.2017.
  */
 
-public class MenuCartPagerAdapter extends FragmentStatePagerAdapter {
+public class MainPagerAdapter extends FragmentStatePagerAdapter {
 
     private static final CharSequence CART_TITLE = "CART";
-    private static final CharSequence MENU_TITLE = "MENU";
+    private static final CharSequence CATALOG_TITLE = "CATALOG";
 
-    public MenuCartPagerAdapter(FragmentManager fm) {
+    public MainPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
@@ -26,7 +26,7 @@ public class MenuCartPagerAdapter extends FragmentStatePagerAdapter {
         if (position == 1) {
             return CART_TITLE;
         }
-        return MENU_TITLE;
+        return CATALOG_TITLE;
     }
 
     @NonNull
@@ -35,7 +35,7 @@ public class MenuCartPagerAdapter extends FragmentStatePagerAdapter {
         if (position == 1) {
             return new CartFragment();
         }
-        return new MenuFragment();
+        return new CatalogFragment();
     }
 
     @Override

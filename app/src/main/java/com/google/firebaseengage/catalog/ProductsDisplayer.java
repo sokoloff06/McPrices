@@ -1,4 +1,4 @@
-package com.google.firebaseengage.menu;
+package com.google.firebaseengage.catalog;
 
 /**
  * Created by sokol on 08.03.2017.

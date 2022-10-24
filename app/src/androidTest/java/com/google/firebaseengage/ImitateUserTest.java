@@ -22,7 +22,7 @@ public class ImitateUserTest {
     FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.getInstance();
 
     @Test
-    public void main() throws InterruptedException {
+    public void generatePurchasesBasedOnRcValues() throws InterruptedException {
         // Given
         Context ctx = ApplicationProvider.getApplicationContext();
         System.out.println("package name = " + ctx.getPackageName());
@@ -49,14 +49,28 @@ public class ImitateUserTest {
             System.out.println("App Instance ID = " + task.getResult());
             appIdLatch.countDown();
         });
+        String firebaseInstanceId = analytics.getFirebaseInstanceId();
+        System.out.println("Firebase Instance ID = " + firebaseInstanceId);
+        //TODO: create function logIf(param_name, param_values)
+        // A/B Testing (bgColor) results logic
         String bgColor = remoteConfig.getString(MainActivity.BG_COLOR_KEY).toUpperCase();
         System.out.println("bgColor = " + bgColor);
         if (bgColor.equals("#E0F7FA")) {
             logEvent(bgColor, analytics);
-        } else if (bgColor.equals("#FFEBEE") || bgColor.equals("#FFFFFF")) {
+        } else {
             double random = Math.random();
             if (random <= 0.5) {
                 logEvent(bgColor, analytics);
+            }
+        }
+
+        // Personalization (btn_buy_color) results logic
+        String btnColor = remoteConfig.getString(CartFragment.PURCHASE_BTN_COLOR).toUpperCase();
+        System.out.println(CartFragment.PURCHASE_BTN_COLOR + " = " + btnColor);
+         if (btnColor.equals("#2D77E3") || btnColor.equals("#633BAD")) {
+            double random = Math.random();
+            if (random <= 0.5) {
+                logEvent(btnColor, analytics);
             }
         }
         appIdLatch.await(5000, TimeUnit.MILLISECONDS);
@@ -64,16 +78,14 @@ public class ImitateUserTest {
 
     private void logEvent(String bgColor, FirebaseAnalytics analytics) {
         String btnColor = remoteConfig.getString(CartFragment.PURCHASE_BTN_COLOR).toUpperCase();
-        System.out.println("btnColor = " + btnColor);
-        String firebaseInstanceId = analytics.getFirebaseInstanceId();
-        System.out.println("Firebase Instance ID = " + firebaseInstanceId);
-        System.out.println("Logging event");
+
         Bundle eventParams = new Bundle();
         eventParams.putString(FirebaseAnalytics.Param.CURRENCY, "EUR");
         eventParams.putDouble(FirebaseAnalytics.Param.VALUE, 10);
-        eventParams.putString(FirebaseAnalytics.Param.TRANSACTION_ID, firebaseInstanceId);
+        eventParams.putString(FirebaseAnalytics.Param.TRANSACTION_ID, analytics.getFirebaseInstanceId());
         eventParams.putString(FirebaseAnalytics.Param.AFFILIATION, bgColor);
         eventParams.putString(FirebaseAnalytics.Param.COUPON, btnColor);
+        System.out.println("Logging event");
         analytics.logEvent(FirebaseAnalytics.Event.PURCHASE, eventParams);
     }
 }

@@ -7,7 +7,7 @@ import android.util.Log;
 import com.google.firebaseengage.api.McApi;
 import com.google.firebaseengage.data.ProductsRepository;
 import com.google.firebaseengage.entities.Product;
-import com.google.firebaseengage.menu.ProductsDisplayer;
+import com.google.firebaseengage.catalog.ProductsDisplayer;
 
 import java.io.FileOutputStream;
 import java.io.InputStream;

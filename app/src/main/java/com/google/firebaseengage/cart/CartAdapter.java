@@ -18,6 +18,7 @@ import com.google.firebaseengage.entities.Cart;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
@@ -30,7 +31,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartItemViewHo
     //TODO: Swipe to delete whole ProductRecord from cart
 
 
-    private CartHandler cartHandler;
+    private final CartHandler cartHandler;
     private List<Cart.ProductRecord> records = new ArrayList<>();
 
     public CartAdapter(CartHandler cartHandler) {
@@ -38,6 +39,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartItemViewHo
         this.cart = cartHandler.getCart();
     }
 
+    @NonNull
     @Override
     public CartItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();

@@ -1,8 +1,7 @@
-package com.google.firebaseengage.menu;
+package com.google.firebaseengage.catalog;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.util.Log;
@@ -83,6 +82,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     }
 
     public void loadProducts() {
+        // RC Demo 2: Updating price tag background color
         priceColor = FirebaseRemoteConfig.getInstance().getString(PRICE_COLOR_KEY);
         Log.d("ENGAGE-DEBUG", "Using bg_price of " + priceColor + " from Remote Config");
         List<Product> products = repository.getProducts();
@@ -93,7 +93,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     @Override
     public ProductListAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
-        View itemView = LayoutInflater.from(context).inflate(R.layout.menu_item, parent, false);
+        View itemView = LayoutInflater.from(context).inflate(R.layout.product_item, parent, false);
         return new ProductListAdapterViewHolder(itemView);
     }
 

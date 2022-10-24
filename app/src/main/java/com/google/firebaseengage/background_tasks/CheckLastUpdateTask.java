@@ -3,7 +3,7 @@ package com.google.firebaseengage.background_tasks;
 import android.os.AsyncTask;
 
 import com.google.firebaseengage.api.McApi;
-import com.google.firebaseengage.menu.ProductsDisplayer;
+import com.google.firebaseengage.catalog.ProductsDisplayer;
 
 import java.sql.Timestamp;
 

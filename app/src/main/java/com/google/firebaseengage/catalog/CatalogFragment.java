@@ -1,4 +1,4 @@
-package com.google.firebaseengage.menu;
+package com.google.firebaseengage.catalog;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -27,7 +27,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-public class MenuFragment extends Fragment implements ProductsDisplayer {
+public class CatalogFragment extends Fragment implements ProductsDisplayer {
 
     CartHandler cartHandler;
     Cart cart;
@@ -54,7 +54,7 @@ public class MenuFragment extends Fragment implements ProductsDisplayer {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_menu, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_catalog, container, false);
 
         pbUpdating = rootView.findViewById(R.id.pb_updating);
         swipeRefreshLayout = rootView.findViewById(R.id.swiperefresh);

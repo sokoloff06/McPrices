@@ -10,4 +10,5 @@
     <string name="buy_text">Send Purchase Data</string>
     <string name="product_image">product image</string>
     <string name="transaction_id_input_field">Transaction ID input field</string>
+    <string name="utils_title">Firebase Engage Utils</string>
 </resources>

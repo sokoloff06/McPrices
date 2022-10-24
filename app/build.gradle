@@ -1,7 +1,19 @@
-apply plugin: 'com.android.application'
-apply plugin: 'com.google.gms.google-services'
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    // Google services Gradle plugin
+    id 'com.google.gms.google-services'
+}
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('/Users/sokolovv/Projects/apps/android/sokolovv-keystore')
+            storePassword 'qwe123#'
+            keyAlias 'key0'
+            keyPassword 'qwe123#'
+        }
+    }
     compileSdkVersion 33
     defaultConfig {
         applicationId "com.google.firebaseengage"
@@ -29,6 +41,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.2.0-alpha04'
     implementation 'com.google.android.material:material:1.6.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
 
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.0.2'
@@ -41,7 +54,10 @@ dependencies {
     // Firebase
     implementation platform('com.google.firebase:firebase-bom:31.0.1')
     implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-config'
+    implementation 'com.google.firebase:firebase-messaging'
+    implementation 'com.google.firebase:firebase-inappmessaging-display'
 
     androidTestImplementation 'junit:junit:4.13.2'
     androidTestImplementation "androidx.test:runner:1.4.0"
