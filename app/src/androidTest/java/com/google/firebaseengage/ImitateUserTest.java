@@ -1,5 +1,7 @@
 package com.google.firebaseengage;
 
+import static com.google.firebaseengage.MainActivity.LOG_TAG;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,7 +12,9 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.firebaseengage.cart.CartFragment;
+import com.google.firebaseengage.firebase.PersonalizationAssignmentObserver;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
@@ -20,12 +24,20 @@ import java.util.concurrent.TimeUnit;
 public class ImitateUserTest {
 
     FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.getInstance();
+    FirebaseAnalytics analytics;
+
+    @Before
+    public void setup() {
+        PersonalizationAssignmentObserver.latch = new CountDownLatch(1);
+        PersonalizationAssignmentObserver.listener = () -> logPurchase("");
+        analytics = FirebaseAnalytics.getInstance(ApplicationProvider.getApplicationContext());
+    }
 
     @Test
     public void generatePurchasesBasedOnRcValues() throws InterruptedException {
         // Given
         Context ctx = ApplicationProvider.getApplicationContext();
-        System.out.println("package name = " + ctx.getPackageName());
+        Log.d(LOG_TAG, "package name = " + ctx.getPackageName());
 
         FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(ctx);
         FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.getInstance();
@@ -46,46 +58,41 @@ public class ImitateUserTest {
         rcFetchLatch.await(5000, TimeUnit.MILLISECONDS);
         final CountDownLatch appIdLatch = new CountDownLatch(1);
         analytics.getAppInstanceId().addOnCompleteListener(task -> {
-            System.out.println("App Instance ID = " + task.getResult());
+            Log.d(LOG_TAG, "App Instance ID = " + task.getResult());
             appIdLatch.countDown();
         });
         String firebaseInstanceId = analytics.getFirebaseInstanceId();
-        System.out.println("Firebase Instance ID = " + firebaseInstanceId);
+        Log.d(LOG_TAG, "Firebase Instance ID = " + firebaseInstanceId);
         //TODO: create function logIf(param_name, param_values)
         // A/B Testing (bgColor) results logic
         String bgColor = remoteConfig.getString(MainActivity.BG_COLOR_KEY).toUpperCase();
-        System.out.println("bgColor = " + bgColor);
+        Log.d(LOG_TAG, "bgColor = " + bgColor);
         if (bgColor.equals("#E0F7FA")) {
-            logEvent(bgColor, analytics);
+            logPurchase(bgColor);
         } else {
             double random = Math.random();
             if (random <= 0.5) {
-                logEvent(bgColor, analytics);
+                logPurchase(bgColor);
             }
         }
 
         // Personalization (btn_buy_color) results logic
         String btnColor = remoteConfig.getString(CartFragment.PURCHASE_BTN_COLOR).toUpperCase();
-        System.out.println(CartFragment.PURCHASE_BTN_COLOR + " = " + btnColor);
-         if (btnColor.equals("#2D77E3") || btnColor.equals("#633BAD")) {
-            double random = Math.random();
-            if (random <= 0.5) {
-                logEvent(btnColor, analytics);
-            }
-        }
+        Log.d(LOG_TAG, CartFragment.PURCHASE_BTN_COLOR + " = " + btnColor);
+        // Log Purchase is sent via listener
         appIdLatch.await(5000, TimeUnit.MILLISECONDS);
+        PersonalizationAssignmentObserver.latch.await(5000, TimeUnit.MILLISECONDS);
     }
 
-    private void logEvent(String bgColor, FirebaseAnalytics analytics) {
+    private void logPurchase(String bgColor) {
         String btnColor = remoteConfig.getString(CartFragment.PURCHASE_BTN_COLOR).toUpperCase();
-
         Bundle eventParams = new Bundle();
         eventParams.putString(FirebaseAnalytics.Param.CURRENCY, "EUR");
         eventParams.putDouble(FirebaseAnalytics.Param.VALUE, 10);
         eventParams.putString(FirebaseAnalytics.Param.TRANSACTION_ID, analytics.getFirebaseInstanceId());
         eventParams.putString(FirebaseAnalytics.Param.AFFILIATION, bgColor);
         eventParams.putString(FirebaseAnalytics.Param.COUPON, btnColor);
-        System.out.println("Logging event");
+        Log.d(LOG_TAG, "Logging event");
         analytics.logEvent(FirebaseAnalytics.Event.PURCHASE, eventParams);
     }
 }

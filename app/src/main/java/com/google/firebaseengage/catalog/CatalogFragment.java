@@ -1,9 +1,13 @@
 package com.google.firebaseengage.catalog;
 
+import static com.google.firebaseengage.MainActivity.LOG_TAG;
+
 import android.content.Context;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebaseengage.R;
 import com.google.firebaseengage.api.McApi;
 import com.google.firebaseengage.api.McApiLocal;
@@ -27,7 +32,14 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import java.util.concurrent.CountDownLatch;
+
 public class CatalogFragment extends Fragment implements ProductsDisplayer {
+
+    private static final String BG_COLOR_KEY = "bg_color";
+    public static final String PRICE_COLOR_KEY = "bg_price";
+    String priceColor;
+    CountDownLatch waitingForRc = null;
 
     CartHandler cartHandler;
     Cart cart;
@@ -38,6 +50,7 @@ public class CatalogFragment extends Fragment implements ProductsDisplayer {
     ProgressBar pbUpdating;
     TextView itemPrice;
     SwipeRefreshLayout swipeRefreshLayout;
+    FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.getInstance();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,10 +68,9 @@ public class CatalogFragment extends Fragment implements ProductsDisplayer {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_catalog, container, false);
-
         pbUpdating = rootView.findViewById(R.id.pb_updating);
         swipeRefreshLayout = rootView.findViewById(R.id.swiperefresh);
-        swipeRefreshLayout.setOnRefreshListener(this::startUpdate);
+        swipeRefreshLayout.setOnRefreshListener(this::onSwipeUpdate);
 //        itemPrice = rootView.findViewById(R.id.item_price);
 
         productListRecyclerView = rootView.findViewById(R.id.rv_product_list);
@@ -71,7 +83,7 @@ public class CatalogFragment extends Fragment implements ProductsDisplayer {
         /*setHasOptionsMenu(true);*/
 
         if (isNetworkOnline()) {
-            startUpdate();
+            loadProducts();
         } else {
             loadError();
         }
@@ -127,7 +139,32 @@ public class CatalogFragment extends Fragment implements ProductsDisplayer {
         return super.onOptionsItemSelected(item);
     }*/
 
-    public void startUpdate() {
+    public void onSwipeUpdate() {
+        remoteConfig.fetchAndActivate()
+                .addOnCompleteListener(task -> {
+                    Log.d(
+                            "ENGAGE-DEBUG",
+                            "Remote Control fetched and active"
+                    );
+                    // RC Demo 3: Background color on refresh (A/B testing)
+                    String color = remoteConfig.getString(BG_COLOR_KEY);
+                    Log.d(LOG_TAG, "Using bg_color of " + color + " from Remote Config");
+                    this.getView().setBackgroundColor(Color.parseColor(color));
+                    // RC Demo 2: Updating price tag background color
+                    priceColor = remoteConfig.getString(PRICE_COLOR_KEY);
+                    Log.d("ENGAGE-DEBUG", "Using bg_price of " + priceColor + " from Remote Config");
+                    loadProducts();
+                })
+                .addOnFailureListener(exception -> {
+                            Log.d(
+                                    "ENGAGE-DEBUG",
+                                    "Remote Control FAILED to be fetched: " + exception.getLocalizedMessage());
+                            loadProducts();
+                        }
+                );
+    }
+
+    private void loadProducts() {
         setLoadingVisible();
         if (isNetworkOnline()) {
             new CheckLastUpdateTask(mcApi, productsRepository.getTimestamp(), this).execute();
@@ -151,7 +188,8 @@ public class CatalogFragment extends Fragment implements ProductsDisplayer {
 
     @Override
     public void load() {
-        productListAdapter.loadProducts();
+        Log.d(LOG_TAG, "load(); priceColor = " + priceColor);
+        productListAdapter.loadProducts(priceColor);
         setDataVisible();
         swipeRefreshLayout.setRefreshing(false);
     }

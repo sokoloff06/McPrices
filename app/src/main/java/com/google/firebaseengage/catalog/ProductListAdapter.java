@@ -1,5 +1,7 @@
 package com.google.firebaseengage.catalog;
 
+import static com.google.firebaseengage.MainActivity.LOG_TAG;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -27,7 +29,7 @@ import androidx.recyclerview.widget.SortedList;
 
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.ProductListAdapterViewHolder> {
 
-    public static final String PRICE_COLOR_KEY = "bg_price";
+
     //TODO: sorting by price/category/name
     private ProductsRepository repository;
     private ProductsDisplayer productsDisplayer;
@@ -81,10 +83,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         });
     }
 
-    public void loadProducts() {
-        // RC Demo 2: Updating price tag background color
-        priceColor = FirebaseRemoteConfig.getInstance().getString(PRICE_COLOR_KEY);
-        Log.d("ENGAGE-DEBUG", "Using bg_price of " + priceColor + " from Remote Config");
+    public void loadProducts(String priceColor) {
+        this.priceColor = priceColor;
+        Log.d(LOG_TAG, "loadProducts(); priceColor = " + priceColor);
         List<Product> products = repository.getProducts();
         productSortedListByName.addAll(products);
         notifyDataSetChanged();
@@ -99,8 +100,11 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     @Override
     public void onBindViewHolder(ProductListAdapterViewHolder holder, int position) {
+        Log.d(LOG_TAG, "onBindViewHolder()");
         GradientDrawable dr = (GradientDrawable) holder.textPrice.getBackground();
-        dr.setColor(Color.parseColor(priceColor));
+        if (priceColor != null) {
+            dr.setColor(Color.parseColor(priceColor));
+        }
 
         Product p = productSortedListByName.get(position);
         holder.textView.setText(p.getName());

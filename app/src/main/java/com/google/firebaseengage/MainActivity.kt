@@ -17,6 +17,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.google.firebaseengage.cart.CartAdapter
+import com.google.firebaseengage.cart.CartFragment
 import com.google.firebaseengage.cart.CartHandler
 import com.google.firebaseengage.entities.Cart
 
@@ -84,21 +85,9 @@ class MainActivity : AppCompatActivity(), CartHandler {
         val configSettings = FirebaseRemoteConfigSettings.Builder()
             .setMinimumFetchIntervalInSeconds(5)
             .build()
+        // TODO: explore remoteConfig.getValue()
         remoteConfig!!.setConfigSettingsAsync(configSettings)
         remoteConfig!!.setDefaultsAsync(R.xml.remote_config_defaults)
-        remoteConfig!!.fetchAndActivate()
-            .addOnCompleteListener {
-                Log.d(
-                    "ENGAGE-DEBUG",
-                    "Remote Control fetched and active"
-                )
-            }
-            .addOnFailureListener { exception: Exception ->
-                Log.d(
-                    "ENGAGE-DEBUG",
-                    "Remote Control FAILED to be fetched: " + exception.localizedMessage
-                )
-            }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -120,11 +109,6 @@ class MainActivity : AppCompatActivity(), CartHandler {
     override fun onResume() {
         super.onResume()
         navigationView.setCheckedItem(R.id.nav_main)
-        // RC Demo 3: Background color on refresh (A/B testing)
-        val color = remoteConfig!!.getString(BG_COLOR_KEY)
-        Log.d(LOG_TAG, "Using bg_color of $color from Remote Config")
-        viewPager.setBackgroundColor(Color.parseColor(color))
-
         Log.d(LOG_TAG, "onResume: $intent")
         intent.extras?.let {
             if (intent.extras!!.getString("redirect") == "promo" && !intent.hasExtra("consumed")) {
@@ -156,6 +140,5 @@ class MainActivity : AppCompatActivity(), CartHandler {
 
     companion object {
         const val LOG_TAG = "ENGAGE-DEBUG"
-        const val BG_COLOR_KEY = "bg_color"
     }
 }

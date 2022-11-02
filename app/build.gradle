@@ -59,6 +59,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging'
     implementation 'com.google.firebase:firebase-inappmessaging-display'
 
+    // Google Tag Manager
+    implementation 'com.google.android.gms:play-services-tagmanager:18.0.2'
+
     androidTestImplementation 'junit:junit:4.13.2'
     androidTestImplementation "androidx.test:runner:1.4.0"
     androidTestImplementation "androidx.test:rules:1.4.0"
