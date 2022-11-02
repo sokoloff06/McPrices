@@ -17,6 +17,9 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
     private static final CharSequence CART_TITLE = "CART";
     private static final CharSequence CATALOG_TITLE = "CATALOG";
 
+    private final CartFragment cart = new CartFragment();
+    private final CatalogFragment catalog = new CatalogFragment();
+
     public MainPagerAdapter(FragmentManager fm) {
         super(fm);
     }
@@ -33,9 +36,9 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 1) {
-            return new CartFragment();
+            return cart;
         }
-        return new CatalogFragment();
+        return catalog;
     }
 
     @Override

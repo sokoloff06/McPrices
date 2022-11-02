@@ -2,7 +2,6 @@ package com.google.firebaseengage
 
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -11,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
@@ -19,15 +19,18 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.google.firebaseengage.cart.CartAdapter
 import com.google.firebaseengage.cart.CartFragment
 import com.google.firebaseengage.cart.CartHandler
+import com.google.firebaseengage.catalog.CatalogFragment
 import com.google.firebaseengage.entities.Cart
 
 class MainActivity : AppCompatActivity(), CartHandler {
     private lateinit var navigationView: NavigationView
     private var cart = Cart()
-    private lateinit var cartAdapter: CartAdapter
+    private var cartAdapter = CartAdapter(this)
     private lateinit var navDrawer: DrawerLayout
     private lateinit var viewPager: ViewPager
-    var remoteConfig: FirebaseRemoteConfig? = null
+    private lateinit var remoteConfig: FirebaseRemoteConfig
+
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +39,8 @@ class MainActivity : AppCompatActivity(), CartHandler {
         setUpAndApplyRemoteConfig()
         navDrawer = findViewById(R.id.drawer_layout)
         navigationView = findViewById(R.id.nav_view)
+        swipeRefreshLayout = findViewById(R.id.swiperefresh)
+        swipeRefreshLayout.setOnRefreshListener { onSwipeUpdate() }
         navigationView.setNavigationItemSelectedListener { menuItem: MenuItem ->
             // set item as selected to persist highlight
             menuItem.isChecked = true
@@ -63,7 +68,6 @@ class MainActivity : AppCompatActivity(), CartHandler {
         val actionBar = supportActionBar
         actionBar!!.setDisplayHomeAsUpEnabled(true)
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu)
-        cartAdapter = CartAdapter(this)
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -74,20 +78,37 @@ class MainActivity : AppCompatActivity(), CartHandler {
          * The [ViewPager] that will host the section contents.
          */
         viewPager = findViewById(R.id.container)
-        viewPager.setAdapter(pagerAdapter)
+        swipeRefreshLayout = findViewById(R.id.swiperefresh)
+        swipeRefreshLayout.setOnRefreshListener { this.onSwipeUpdate() }
+        viewPager.adapter = pagerAdapter
         val tabLayout = findViewById<TabLayout>(R.id.tabs_selector)
         tabLayout.setupWithViewPager(viewPager)
+    }
+
+    private fun onSwipeUpdate() {
+        swipeRefreshLayout.isRefreshing = true
+        remoteConfig.fetchAndActivate().addOnCompleteListener {
+            Log.d("ENGAGE-DEBUG", "Remote Control fetched and active")
+            ((viewPager.adapter as MainPagerAdapter).getItem(0) as CatalogFragment).onSwipeUpdate()
+            ((viewPager.adapter as MainPagerAdapter).getItem(1) as CartFragment).onSwipeUpdate()
+        }.addOnFailureListener { exception ->
+            Log.d(
+                "ENGAGE-DEBUG", "Remote Control FAILED to be fetched: $exception.localizedMessage"
+            )
+            ((viewPager.adapter as MainPagerAdapter).getItem(0) as CatalogFragment).onSwipeUpdate()
+            ((viewPager.adapter as MainPagerAdapter).getItem(1) as CartFragment).onSwipeUpdate()
+        }
+        swipeRefreshLayout.isRefreshing = false
     }
 
     private fun setUpAndApplyRemoteConfig() {
         // RC Demo 1: set up remote config
         remoteConfig = FirebaseRemoteConfig.getInstance()
-        val configSettings = FirebaseRemoteConfigSettings.Builder()
-            .setMinimumFetchIntervalInSeconds(5)
-            .build()
+        val configSettings =
+            FirebaseRemoteConfigSettings.Builder().setMinimumFetchIntervalInSeconds(5).build()
         // TODO: explore remoteConfig.getValue()
-        remoteConfig!!.setConfigSettingsAsync(configSettings)
-        remoteConfig!!.setDefaultsAsync(R.xml.remote_config_defaults)
+        remoteConfig.setConfigSettingsAsync(configSettings)
+        remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

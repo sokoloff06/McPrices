@@ -44,15 +44,6 @@ public class CartFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        // RC Demo 4: Purchase button color - personalization
-        String color = FirebaseRemoteConfig.getInstance().getString(PURCHASE_BTN_COLOR);
-        sendPurchaseButton.setBackgroundColor(Color.parseColor(color));
-        Log.d("ENGAGE-DEBUG", "Applied btn_buy_color of " + color + " from Remote Config");
-    }
-
-    @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try {
@@ -87,5 +78,12 @@ public class CartFragment extends Fragment {
             }
         });
         return rootView;
+    }
+
+    public void onSwipeUpdate() {
+        // RC Demo 4: Purchase button color - personalization
+        String color = FirebaseRemoteConfig.getInstance().getString(PURCHASE_BTN_COLOR);
+        sendPurchaseButton.setBackgroundColor(Color.parseColor(color));
+        Log.d("ENGAGE-DEBUG", "Applied btn_buy_color of " + color + " from Remote Config");
     }
 }
