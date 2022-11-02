@@ -85,7 +85,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     public void loadProducts(String priceColor) {
         this.priceColor = priceColor;
-        Log.d(LOG_TAG, "loadProducts(); priceColor = " + priceColor);
+        Log.d("ENGAGE-DEBUG", "Applied bg_price of " + priceColor + " from Remote Config (for soon-to-happen ViewHolder rendering)");
         List<Product> products = repository.getProducts();
         productSortedListByName.addAll(products);
         notifyDataSetChanged();
@@ -100,12 +100,10 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     @Override
     public void onBindViewHolder(ProductListAdapterViewHolder holder, int position) {
-        Log.d(LOG_TAG, "onBindViewHolder()");
         GradientDrawable dr = (GradientDrawable) holder.textPrice.getBackground();
         if (priceColor != null) {
             dr.setColor(Color.parseColor(priceColor));
         }
-
         Product p = productSortedListByName.get(position);
         holder.textView.setText(p.getName());
         holder.textPrice.setText(String.valueOf(p.getPrice()));

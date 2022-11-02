@@ -12,6 +12,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.firebaseengage.cart.CartFragment;
+import com.google.firebaseengage.catalog.CatalogFragment;
 import com.google.firebaseengage.firebase.PersonalizationAssignmentObserver;
 
 import org.junit.Before;
@@ -65,7 +66,7 @@ public class ImitateUserTest {
         Log.d(LOG_TAG, "Firebase Instance ID = " + firebaseInstanceId);
         //TODO: create function logIf(param_name, param_values)
         // A/B Testing (bgColor) results logic
-        String bgColor = remoteConfig.getString(MainActivity.BG_COLOR_KEY).toUpperCase();
+        String bgColor = remoteConfig.getString(CatalogFragment.BG_COLOR_KEY).toUpperCase();
         Log.d(LOG_TAG, "bgColor = " + bgColor);
         if (bgColor.equals("#E0F7FA")) {
             logPurchase(bgColor);

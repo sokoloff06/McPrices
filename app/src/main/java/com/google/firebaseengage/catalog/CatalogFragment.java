@@ -36,7 +36,7 @@ import java.util.concurrent.CountDownLatch;
 
 public class CatalogFragment extends Fragment implements ProductsDisplayer {
 
-    private static final String BG_COLOR_KEY = "bg_color";
+    public static final String BG_COLOR_KEY = "bg_color";
     public static final String PRICE_COLOR_KEY = "bg_price";
     String priceColor;
     CountDownLatch waitingForRc = null;
@@ -148,11 +148,10 @@ public class CatalogFragment extends Fragment implements ProductsDisplayer {
                     );
                     // RC Demo 3: Background color on refresh (A/B testing)
                     String color = remoteConfig.getString(BG_COLOR_KEY);
-                    Log.d(LOG_TAG, "Using bg_color of " + color + " from Remote Config");
                     this.getView().setBackgroundColor(Color.parseColor(color));
+                    Log.d(LOG_TAG, "Applied bg_color of " + color + " from Remote Config");
                     // RC Demo 2: Updating price tag background color
                     priceColor = remoteConfig.getString(PRICE_COLOR_KEY);
-                    Log.d("ENGAGE-DEBUG", "Using bg_price of " + priceColor + " from Remote Config");
                     loadProducts();
                 })
                 .addOnFailureListener(exception -> {
@@ -188,7 +187,6 @@ public class CatalogFragment extends Fragment implements ProductsDisplayer {
 
     @Override
     public void load() {
-        Log.d(LOG_TAG, "load(); priceColor = " + priceColor);
         productListAdapter.loadProducts(priceColor);
         setDataVisible();
         swipeRefreshLayout.setRefreshing(false);
