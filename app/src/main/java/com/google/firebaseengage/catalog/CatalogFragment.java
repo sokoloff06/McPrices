@@ -20,8 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebaseengage.R;
-import com.google.firebaseengage.api.McApi;
-import com.google.firebaseengage.api.McApiLocal;
+import com.google.firebaseengage.api.ProductsApi;
+import com.google.firebaseengage.api.ProductsApiLocal;
 import com.google.firebaseengage.background_tasks.CheckLastUpdateTask;
 import com.google.firebaseengage.background_tasks.DownloadProductsTask;
 import com.google.firebaseengage.cart.CartHandler;
@@ -37,7 +37,7 @@ public class CatalogFragment extends Fragment implements ProductsDisplayer {
 
     CartHandler cartHandler;
     Cart cart;
-    McApi mcApi;
+    ProductsApi productsApi;
     ProductsRepositoryImpl productsRepository;
     RecyclerView productListRecyclerView;
     ProductListAdapter productListAdapter;
@@ -48,8 +48,7 @@ public class CatalogFragment extends Fragment implements ProductsDisplayer {
         super.onCreate(savedInstanceState);
 
         //Initializing objects for data manipulations
-//        mcApi = new McApiImpl();
-        mcApi = new McApiLocal(getContext().getApplicationContext());
+        productsApi = new ProductsApiLocal(getContext().getApplicationContext());
         ProductsDbHelper dbHelper = new ProductsDbHelper(getContext());
         productsRepository = new ProductsRepositoryImpl(dbHelper.getWritableDatabase());
         productListAdapter = new ProductListAdapter(productsRepository, this);
@@ -124,7 +123,7 @@ public class CatalogFragment extends Fragment implements ProductsDisplayer {
     private void loadProducts() {
         setLoadingVisible();
         if (isNetworkOnline()) {
-            new CheckLastUpdateTask(mcApi, productsRepository.getTimestamp(), this).execute();
+            new CheckLastUpdateTask(productsApi, productsRepository.getTimestamp(), this).execute();
         } else {
             loadError();
         }
@@ -140,7 +139,7 @@ public class CatalogFragment extends Fragment implements ProductsDisplayer {
 
     private void download() {
         String filesDir = getContext().getFilesDir().getAbsolutePath();
-        new DownloadProductsTask(getContext().getApplicationContext(), mcApi, productsRepository, filesDir, this).execute();
+        new DownloadProductsTask(getContext().getApplicationContext(), productsApi, productsRepository, filesDir, this).execute();
     }
 
     @Override

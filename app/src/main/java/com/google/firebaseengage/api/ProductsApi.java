@@ -9,7 +9,7 @@ import java.util.List;
  * Created by sokol on 17.02.2017.
  */
 
-public interface McApi {
+public interface ProductsApi {
     Timestamp getLastUpdatedTimestamp();
 
     List<Product> getProducts();

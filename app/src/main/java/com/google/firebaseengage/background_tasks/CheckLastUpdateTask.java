@@ -2,7 +2,7 @@ package com.google.firebaseengage.background_tasks;
 
 import android.os.AsyncTask;
 
-import com.google.firebaseengage.api.McApi;
+import com.google.firebaseengage.api.ProductsApi;
 import com.google.firebaseengage.catalog.ProductsDisplayer;
 
 import java.sql.Timestamp;
@@ -14,10 +14,10 @@ public class CheckLastUpdateTask extends AsyncTask<Void, Void, Boolean> {
 
     private final Timestamp localTimestamp;
     private final ProductsDisplayer productsDisplayer;
-    private final McApi mcApi;
+    private final ProductsApi productsApi;
 
-    public CheckLastUpdateTask(McApi mcApi, Timestamp localTimestamp, ProductsDisplayer productsDisplayer) {
-        this.mcApi = mcApi;
+    public CheckLastUpdateTask(ProductsApi productsApi, Timestamp localTimestamp, ProductsDisplayer productsDisplayer) {
+        this.productsApi = productsApi;
         this.localTimestamp = localTimestamp;
         this.productsDisplayer = productsDisplayer;
     }
@@ -29,7 +29,7 @@ public class CheckLastUpdateTask extends AsyncTask<Void, Void, Boolean> {
             return true;
         }
         System.out.println("Getting timestamp from server");
-        Timestamp serverTimestamp = mcApi.getLastUpdatedTimestamp();
+        Timestamp serverTimestamp = productsApi.getLastUpdatedTimestamp();
         return localTimestamp.before(serverTimestamp);
     }
 

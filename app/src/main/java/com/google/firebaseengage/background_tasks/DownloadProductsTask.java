@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.google.firebaseengage.api.McApi;
+import com.google.firebaseengage.api.ProductsApi;
 import com.google.firebaseengage.data.ProductsRepository;
 import com.google.firebaseengage.entities.Product;
 import com.google.firebaseengage.catalog.ProductsDisplayer;
@@ -38,15 +38,15 @@ public class DownloadProductsTask extends AsyncTask<Void, Void, Boolean> {
 
     private static final String TAG = "DownloadProductsTask";
 
-    private final McApi mcApi;
+    private final ProductsApi productsApi;
     private final ProductsRepository repository;
     private final String filesDir;
     private final ProductsDisplayer productsDisplayer;
     private final Context context;
 
-    public DownloadProductsTask(Context context, McApi mcApi, ProductsRepository repository, String filesDir, ProductsDisplayer productsDisplayer) {
+    public DownloadProductsTask(Context context, ProductsApi productsApi, ProductsRepository repository, String filesDir, ProductsDisplayer productsDisplayer) {
         this.context = context;
-        this.mcApi = mcApi;
+        this.productsApi = productsApi;
         this.repository = repository;
         this.filesDir = filesDir;
         this.productsDisplayer = productsDisplayer;
@@ -57,7 +57,7 @@ public class DownloadProductsTask extends AsyncTask<Void, Void, Boolean> {
         Log.i(TAG, "Timestamp is out of date");
         Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
         Log.i(TAG, "Transferring task to Repository");
-        List<Product> products = mcApi.getProducts();
+        List<Product> products = productsApi.getProducts();
         if (products == null) {
             return false;
         }

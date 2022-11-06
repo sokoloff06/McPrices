@@ -90,7 +90,7 @@ public class ImitateUserTest {
         Bundle eventParams = new Bundle();
         eventParams.putString(FirebaseAnalytics.Param.CURRENCY, "EUR");
         eventParams.putDouble(FirebaseAnalytics.Param.VALUE, 10);
-        eventParams.putString(FirebaseAnalytics.Param.TRANSACTION_ID, analytics.getFirebaseInstanceId());
+//        eventParams.putString(FirebaseAnalytics.Param.TRANSACTION_ID, analytics.getFirebaseInstanceId());
         eventParams.putString(FirebaseAnalytics.Param.AFFILIATION, bgColor);
         eventParams.putString(FirebaseAnalytics.Param.COUPON, btnColor);
         Log.d(LOG_TAG, "Logging event");

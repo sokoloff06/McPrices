@@ -2,7 +2,6 @@ package com.google.firebaseengage.api;
 
 import android.content.Context;
 
-import com.google.firebaseengage.R;
 import com.google.firebaseengage.entities.Product;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,11 +11,11 @@ import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.List;
 
-public class McApiLocal implements McApi{
+public class ProductsApiLocal implements ProductsApi {
     private final Context context;
     Timestamp updateTimestamp;
 
-    public McApiLocal(Context applicationContext) {
+    public ProductsApiLocal(Context applicationContext) {
         this.context = applicationContext;
          updateTimestamp = new Timestamp(System.currentTimeMillis());
     }

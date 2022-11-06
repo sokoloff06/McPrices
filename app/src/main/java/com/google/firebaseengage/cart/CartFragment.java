@@ -1,6 +1,8 @@
 package com.google.firebaseengage.cart;
 
 
+import static com.google.firebaseengage.MainActivity.LOG_TAG;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -74,6 +76,7 @@ public class CartFragment extends Fragment {
                 eventParams.putString(FirebaseAnalytics.Param.CURRENCY, "EUR");
                 eventParams.putDouble(FirebaseAnalytics.Param.VALUE, sum);
                 eventParams.putString(FirebaseAnalytics.Param.TRANSACTION_ID, editText.getText().toString());
+                Log.d(LOG_TAG, "Logging event");
                 FirebaseAnalytics.getInstance(getContext()).logEvent(FirebaseAnalytics.Event.PURCHASE, eventParams);
             }
         });
