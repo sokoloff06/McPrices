@@ -2,6 +2,7 @@ package com.google.firebaseengage
 
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -89,21 +90,27 @@ class MainActivity : AppCompatActivity(), CartHandler {
         swipeRefreshLayout.isRefreshing = true
         remoteConfig.fetchAndActivate().addOnCompleteListener {
             Log.d("ENGAGE-DEBUG", "Remote Control fetched and active")
-            ((viewPager.adapter as MainPagerAdapter).getItem(0) as CatalogFragment).onSwipeUpdate()
-            ((viewPager.adapter as MainPagerAdapter).getItem(1) as CartFragment).onSwipeUpdate()
+            onRemoteConfigComplete()
         }.addOnFailureListener { exception ->
             Log.d(
                 "ENGAGE-DEBUG", "Remote Control FAILED to be fetched: $exception.localizedMessage"
             )
-            ((viewPager.adapter as MainPagerAdapter).getItem(0) as CatalogFragment).onSwipeUpdate()
-            ((viewPager.adapter as MainPagerAdapter).getItem(1) as CartFragment).onSwipeUpdate()
+            onRemoteConfigComplete()
         }
+
+    }
+
+    private fun onRemoteConfigComplete() {
+        ((viewPager.adapter as MainPagerAdapter).getItem(0) as CatalogFragment).onSwipeUpdate()
+        ((viewPager.adapter as MainPagerAdapter).getItem(1) as CartFragment).onSwipeUpdate()
         swipeRefreshLayout.isRefreshing = false
     }
+
 
     private fun setUpAndApplyRemoteConfig() {
         // RC Demo 1: set up remote config
         remoteConfig = FirebaseRemoteConfig.getInstance()
+        // Use only for development. See https://firebase.google.com/docs/remote-config/get-started?platform=android#throttling
         val configSettings =
             FirebaseRemoteConfigSettings.Builder().setMinimumFetchIntervalInSeconds(5).build()
         // TODO: explore remoteConfig.getValue()

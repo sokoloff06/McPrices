@@ -66,16 +66,16 @@ public class ImitateUserTest {
         Log.d(LOG_TAG, "Firebase Instance ID = " + firebaseInstanceId);
         //TODO: create function logIf(param_name, param_values)
         // A/B Testing (bgColor) results logic
-        String bgColor = remoteConfig.getString(CatalogFragment.BG_COLOR_KEY).toUpperCase();
-        Log.d(LOG_TAG, "bgColor = " + bgColor);
-        if (bgColor.equals("#E0F7FA")) {
-            logPurchase(bgColor);
-        } else {
-            double random = Math.random();
-            if (random <= 0.5) {
-                logPurchase(bgColor);
-            }
-        }
+//        String bgColor = remoteConfig.getString(CatalogFragment.BG_COLOR_KEY).toUpperCase();
+//        Log.d(LOG_TAG, "bgColor = " + bgColor);
+//        if (bgColor.equals("#E0F7FA")) {
+//            logPurchase(bgColor);
+//        } else {
+//            double random = Math.random();
+//            if (random <= 0.5) {
+//                logPurchase(bgColor);
+//            }
+//        }
 
         // Personalization (btn_buy_color) results logic
         String btnColor = remoteConfig.getString(CartFragment.PURCHASE_BTN_COLOR).toUpperCase();

@@ -101,9 +101,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     @Override
     public void onBindViewHolder(ProductListAdapterViewHolder holder, int position) {
         GradientDrawable dr = (GradientDrawable) holder.textPrice.getBackground();
-        if (priceColor != null) {
-            dr.setColor(Color.parseColor(priceColor));
-        }
+        dr.setColor(Color.parseColor(priceColor));
         Product p = productSortedListByName.get(position);
         holder.textView.setText(p.getName());
         holder.textPrice.setText(String.valueOf(p.getPrice()));

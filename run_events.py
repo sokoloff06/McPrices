@@ -5,5 +5,5 @@ count = 1
 while True:
     print(count)
     count = count + 1
-    subprocess.run('./gradlew connectedAndroidTest', shell=True)
+    subprocess.run("./gradlew connectedAndroidTest", shell=True)
     subprocess.run("adb uninstall com.google.firebaseengage", shell=True)

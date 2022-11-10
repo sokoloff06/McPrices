@@ -46,7 +46,6 @@ public class CatalogFragment extends Fragment implements ProductsDisplayer {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         //Initializing objects for data manipulations
         productsApi = new ProductsApiLocal(getContext().getApplicationContext());
         ProductsDbHelper dbHelper = new ProductsDbHelper(getContext());
@@ -65,6 +64,10 @@ public class CatalogFragment extends Fragment implements ProductsDisplayer {
         //TODO: BUG! Sometimes No adapter attached; skipping layout
         productListRecyclerView.setAdapter(productListAdapter);
 
+        // RC Demo 3: Setting default/previously fetched background color on launch (A/B testing)
+        String color = remoteConfig.getString(BG_COLOR_KEY);
+        rootView.setBackgroundColor(Color.parseColor(color));
+        Log.d(LOG_TAG, "Applied bg_color of " + color + " from Remote Config");
         /*setHasOptionsMenu(true);*/
 
         if (isNetworkOnline()) {
@@ -102,21 +105,17 @@ public class CatalogFragment extends Fragment implements ProductsDisplayer {
             cartHandler = (CartHandler) context;
             cart = cartHandler.getCart();
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
+            throw new ClassCastException(context
                     + " must implement CartHandler interface");
         }
     }
 
 
     public void onSwipeUpdate() {
-        // RC Demo 2: Updating price tag background color
-        priceColor = remoteConfig.getString(PRICE_COLOR_KEY);
-        // RC Demo 3: Background color on refresh (A/B testing)
+        // RC Demo 3: Updating Background color on refresh (A/B testing)
         String color = remoteConfig.getString(BG_COLOR_KEY);
         this.getView().setBackgroundColor(Color.parseColor(color));
         Log.d(LOG_TAG, "Applied bg_color of " + color + " from Remote Config");
-        // RC Demo 2: Updating price tag background color
-        priceColor = remoteConfig.getString(PRICE_COLOR_KEY);
         loadProducts();
     }
 
@@ -144,6 +143,8 @@ public class CatalogFragment extends Fragment implements ProductsDisplayer {
 
     @Override
     public void load() {
+        // RC Demo 2: Setting/Updating price tag background color
+        priceColor = remoteConfig.getString(PRICE_COLOR_KEY);
         productListAdapter.loadProducts(priceColor);
         setDataVisible();
     }

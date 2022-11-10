@@ -7,12 +7,12 @@
   </entry>
   <entry>
     <key>bg_color</key>
-<!--    light grey-->
-    <value>#D6D6D6</value>
+<!--    white -->
+    <value>#FFFFFF</value>
   </entry>
   <entry>
     <key>btn_buy_color</key>
-    <!--    light grey-->
-    <value>#D6D6D6</value>
+    <!--    white -->
+    <value>#FFFFFF</value>
   </entry>
 </defaults>

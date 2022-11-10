@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -67,6 +68,10 @@ public class CartFragment extends Fragment {
         cartRecyclerView.setLayoutManager(layoutManager);
         cartRecyclerView.setAdapter(cartAdapter);
         sendPurchaseButton = rootView.findViewById(R.id.sendPurchaseButton);
+        // RC Demo 4: Setting default/last-fetched purchase button color - personalization
+        String color = FirebaseRemoteConfig.getInstance().getString(PURCHASE_BTN_COLOR);
+        sendPurchaseButton.setBackgroundColor(Color.parseColor(color));
+        Log.d("ENGAGE-DEBUG", "Applied btn_buy_color of " + color + " from Remote Config");
         sendPurchaseButton.setOnClickListener(view -> {
             Context ctx = getContext();
             if (ctx != null) {
@@ -78,6 +83,7 @@ public class CartFragment extends Fragment {
                 eventParams.putString(FirebaseAnalytics.Param.TRANSACTION_ID, editText.getText().toString());
                 Log.d(LOG_TAG, "Logging event");
                 FirebaseAnalytics.getInstance(getContext()).logEvent(FirebaseAnalytics.Event.PURCHASE, eventParams);
+                Toast.makeText(getContext(), eventParams.toString(), Toast.LENGTH_SHORT).show();
             }
         });
         return rootView;
