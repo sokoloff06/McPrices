@@ -2,7 +2,6 @@ package com.google.firebaseengage
 
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -37,7 +36,8 @@ class MainActivity : AppCompatActivity(), CartHandler {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         // Firebase Remote Config
-        setUpAndApplyRemoteConfig()
+        // RC Demo 1: set up remote config
+        setUpRemoteConfig()
         navDrawer = findViewById(R.id.drawer_layout)
         navigationView = findViewById(R.id.nav_view)
         swipeRefreshLayout = findViewById(R.id.swiperefresh)
@@ -88,8 +88,16 @@ class MainActivity : AppCompatActivity(), CartHandler {
 
     private fun onSwipeUpdate() {
         swipeRefreshLayout.isRefreshing = true
+        // RC Demo 3: Fetching Config
         remoteConfig.fetchAndActivate().addOnCompleteListener {
-            Log.d("ENGAGE-DEBUG", "Remote Control fetched and active")
+            if (it.result) {
+                Log.d("ENGAGE-DEBUG", "Remote Config fetched and active")
+            } else {
+                Log.w(
+                    "ENGAGE-DEBUG", "WARNING: minFetchInterval didn't pass or " +
+                            "Config didn't change. Using cached values!"
+                )
+            }
             onRemoteConfigComplete()
         }.addOnFailureListener { exception ->
             Log.d(
@@ -97,7 +105,6 @@ class MainActivity : AppCompatActivity(), CartHandler {
             )
             onRemoteConfigComplete()
         }
-
     }
 
     private fun onRemoteConfigComplete() {
@@ -107,15 +114,22 @@ class MainActivity : AppCompatActivity(), CartHandler {
     }
 
 
-    private fun setUpAndApplyRemoteConfig() {
-        // RC Demo 1: set up remote config
+    private fun setUpRemoteConfig() {
         remoteConfig = FirebaseRemoteConfig.getInstance()
         // Use only for development. See https://firebase.google.com/docs/remote-config/get-started?platform=android#throttling
         val configSettings =
-            FirebaseRemoteConfigSettings.Builder().setMinimumFetchIntervalInSeconds(5).build()
-        // TODO: explore remoteConfig.getValue()
+            FirebaseRemoteConfigSettings.Builder()
+                .setMinimumFetchIntervalInSeconds(5)
+                .build()
         remoteConfig.setConfigSettingsAsync(configSettings)
         remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults)
+//        remoteConfig.setDefaultsAsync(
+//            mapOf(
+//                KEY_PRICE_TAG_COLOR to "#2D3A4A",
+//                KEY_BG_COLOR to "#FFFFFF",
+//                KEY_PURCHASE_BTN_COLOR to "#FFFFFF"
+//            )
+//        )
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

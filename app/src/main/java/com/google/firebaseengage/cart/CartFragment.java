@@ -32,7 +32,7 @@ import com.google.firebaseengage.entities.Cart;
 
 public class CartFragment extends Fragment {
 
-    public static final String PURCHASE_BTN_COLOR = "btn_buy_color";
+    public static final String KEY_PURCHASE_BTN_COLOR = "btn_buy_color";
     RecyclerView cartRecyclerView;
     TextView sumTextView;
     CartAdapter cartAdapter;
@@ -68,8 +68,7 @@ public class CartFragment extends Fragment {
         cartRecyclerView.setLayoutManager(layoutManager);
         cartRecyclerView.setAdapter(cartAdapter);
         sendPurchaseButton = rootView.findViewById(R.id.sendPurchaseButton);
-        // RC Demo 4: Setting default/last-fetched purchase button color - personalization
-        String color = FirebaseRemoteConfig.getInstance().getString(PURCHASE_BTN_COLOR);
+        String color = FirebaseRemoteConfig.getInstance().getString(KEY_PURCHASE_BTN_COLOR);
         sendPurchaseButton.setBackgroundColor(Color.parseColor(color));
         Log.d("ENGAGE-DEBUG", "Applied btn_buy_color of " + color + " from Remote Config");
         sendPurchaseButton.setOnClickListener(view -> {
@@ -90,8 +89,7 @@ public class CartFragment extends Fragment {
     }
 
     public void onSwipeUpdate() {
-        // RC Demo 4: Purchase button color - personalization
-        String color = FirebaseRemoteConfig.getInstance().getString(PURCHASE_BTN_COLOR);
+        String color = FirebaseRemoteConfig.getInstance().getString(KEY_PURCHASE_BTN_COLOR);
         sendPurchaseButton.setBackgroundColor(Color.parseColor(color));
         Log.d("ENGAGE-DEBUG", "Applied btn_buy_color of " + color + " from Remote Config");
     }

@@ -13,10 +13,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.installations.FirebaseInstallations
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebaseengage.MainActivity.Companion.LOG_TAG
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -87,11 +86,16 @@ class UtilActivity : AppCompatActivity() {
     private fun getFid() {
         threadPool.submit {
             // Same as FIAM Installation ID
-            val firebaseInstanceId = firebaseAnalytics.firebaseInstanceId
-            Log.d(LOG_TAG, "firebaseInstanceId = $firebaseInstanceId")
+            firebaseAnalytics.firebaseInstanceId.also {
+                Log.d(LOG_TAG, "firebaseInstanceId = $it")
+            }
 
             firebaseAnalytics.appInstanceId.addOnCompleteListener {
                 Log.d(LOG_TAG, "appInstanceId = ${it.result}")
+            }
+
+            FirebaseInstallations.getInstance().getToken(false).addOnCompleteListener{
+                Log.d(LOG_TAG, "installationAuthToken = ${it.result.token}")
             }
         }
     }
@@ -131,6 +135,7 @@ class UtilActivity : AppCompatActivity() {
         }
     }
 
+    // RC Demo FCM Token
     private fun getToken() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {

@@ -1,6 +1,6 @@
 package com.google.firebaseengage.catalog;
 
-import static com.google.firebaseengage.MainActivity.LOG_TAG;
+import static com.google.firebaseengage.catalog.CatalogFragment.KEY_PRICE_TAG_COLOR;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebaseengage.R;
 import com.google.firebaseengage.data.ProductsRepository;
 import com.google.firebaseengage.entities.Product;
@@ -85,7 +84,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     public void loadProducts(String priceColor) {
         this.priceColor = priceColor;
-        Log.d("ENGAGE-DEBUG", "Applied bg_price of " + priceColor + " from Remote Config (for soon-to-happen ViewHolder rendering)");
+        Log.d("ENGAGE-DEBUG", "Applied " + KEY_PRICE_TAG_COLOR + "=" + priceColor + " from Remote Config (for soon-to-happen ViewHolder rendering)");
         List<Product> products = repository.getProducts();
         productSortedListByName.addAll(products);
         notifyDataSetChanged();

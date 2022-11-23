@@ -31,8 +31,8 @@ import com.google.firebaseengage.entities.Cart;
 
 public class CatalogFragment extends Fragment implements ProductsDisplayer {
 
-    public static final String BG_COLOR_KEY = "bg_color";
-    public static final String PRICE_COLOR_KEY = "bg_price";
+    public static final String KEY_BG_COLOR = "bg_color";
+    public static final String KEY_PRICE_TAG_COLOR = "price_tag";
     String priceColor;
 
     CartHandler cartHandler;
@@ -63,19 +63,14 @@ public class CatalogFragment extends Fragment implements ProductsDisplayer {
         productListRecyclerView.setLayoutManager(layoutManager);
         //TODO: BUG! Sometimes No adapter attached; skipping layout
         productListRecyclerView.setAdapter(productListAdapter);
-
-        // RC Demo 3: Setting default/previously fetched background color on launch (A/B testing)
-        String color = remoteConfig.getString(BG_COLOR_KEY);
+        String color = remoteConfig.getString(KEY_BG_COLOR);
         rootView.setBackgroundColor(Color.parseColor(color));
         Log.d(LOG_TAG, "Applied bg_color of " + color + " from Remote Config");
-        /*setHasOptionsMenu(true);*/
-
         if (isNetworkOnline()) {
             loadProducts();
         } else {
             loadError();
         }
-
         return rootView;
     }
 
@@ -112,8 +107,7 @@ public class CatalogFragment extends Fragment implements ProductsDisplayer {
 
 
     public void onSwipeUpdate() {
-        // RC Demo 3: Updating Background color on refresh (A/B testing)
-        String color = remoteConfig.getString(BG_COLOR_KEY);
+        String color = remoteConfig.getString(KEY_BG_COLOR);
         this.getView().setBackgroundColor(Color.parseColor(color));
         Log.d(LOG_TAG, "Applied bg_color of " + color + " from Remote Config");
         loadProducts();
@@ -143,8 +137,9 @@ public class CatalogFragment extends Fragment implements ProductsDisplayer {
 
     @Override
     public void load() {
-        // RC Demo 2: Setting/Updating price tag background color
-        priceColor = remoteConfig.getString(PRICE_COLOR_KEY);
+        // RC Demo 2: Applying price tag color
+        priceColor = remoteConfig.getString(KEY_PRICE_TAG_COLOR);
+//        Map allParams = remoteConfig.getAll();
         productListAdapter.loadProducts(priceColor);
         setDataVisible();
     }

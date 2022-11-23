@@ -12,7 +12,6 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.firebaseengage.cart.CartFragment;
-import com.google.firebaseengage.catalog.CatalogFragment;
 import com.google.firebaseengage.firebase.PersonalizationAssignmentObserver;
 
 import org.junit.Before;
@@ -78,15 +77,15 @@ public class ImitateUserTest {
 //        }
 
         // Personalization (btn_buy_color) results logic
-        String btnColor = remoteConfig.getString(CartFragment.PURCHASE_BTN_COLOR).toUpperCase();
-        Log.d(LOG_TAG, CartFragment.PURCHASE_BTN_COLOR + " = " + btnColor);
+        String btnColor = remoteConfig.getString(CartFragment.KEY_PURCHASE_BTN_COLOR).toUpperCase();
+        Log.d(LOG_TAG, CartFragment.KEY_PURCHASE_BTN_COLOR + " = " + btnColor);
         // Log Purchase is sent via listener
         appIdLatch.await(5000, TimeUnit.MILLISECONDS);
         PersonalizationAssignmentObserver.latch.await(5000, TimeUnit.MILLISECONDS);
     }
 
     private void logPurchase(String bgColor) {
-        String btnColor = remoteConfig.getString(CartFragment.PURCHASE_BTN_COLOR).toUpperCase();
+        String btnColor = remoteConfig.getString(CartFragment.KEY_PURCHASE_BTN_COLOR).toUpperCase();
         Bundle eventParams = new Bundle();
         eventParams.putString(FirebaseAnalytics.Param.CURRENCY, "EUR");
         eventParams.putDouble(FirebaseAnalytics.Param.VALUE, 10);

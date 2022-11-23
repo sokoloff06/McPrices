@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <defaults>
   <entry>
-    <key>bg_price</key>
+    <key>price_tag</key>
 <!--    dark blue-->
     <value>#2D3A4A</value>
   </entry>
