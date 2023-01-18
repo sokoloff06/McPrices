@@ -21,12 +21,14 @@ import java.util.concurrent.Executors
 
 
 class UtilActivity : AppCompatActivity() {
-    lateinit var firebaseAnalytics : FirebaseAnalytics
+    lateinit var firebaseAnalytics: FirebaseAnalytics
 
     private lateinit var btnConversion: Button
     private lateinit var btnGetToken: Button
     private lateinit var btnGetFid: Button
     private lateinit var btnWelcome: Button
+    private lateinit var btnCrash: Button
+
 
     companion object {
         val threadPool: ExecutorService = Executors.newCachedThreadPool()
@@ -50,7 +52,10 @@ class UtilActivity : AppCompatActivity() {
 
                 // Adding single item to the array of items
                 val purchaseParams = Bundle()
-                purchaseParams.putParcelableArray(FirebaseAnalytics.Param.ITEMS, arrayOf(purchaseItem))
+                purchaseParams.putParcelableArray(
+                    FirebaseAnalytics.Param.ITEMS,
+                    arrayOf(purchaseItem)
+                )
 
                 // Whole purchase description
                 purchaseParams.putString(FirebaseAnalytics.Param.CURRENCY, "USD")
@@ -80,6 +85,12 @@ class UtilActivity : AppCompatActivity() {
             }
         }
 
+        btnCrash = findViewById<Button?>(R.id.btn_crash).apply {
+            setOnClickListener {
+                throw java.lang.RuntimeException("Crashlytics Test")
+            }
+        }
+
         askNotificationPermission()
     }
 
@@ -94,7 +105,10 @@ class UtilActivity : AppCompatActivity() {
                 Log.d(LOG_TAG, "appInstanceId = ${it.result}")
             }
 
-            FirebaseInstallations.getInstance().getToken(false).addOnCompleteListener{
+            firebaseAnalytics.sessionId.addOnCompleteListener {
+                Log.d(LOG_TAG, "sessionId = ${it.result}")
+            }
+            FirebaseInstallations.getInstance().getToken(false).addOnCompleteListener {
                 Log.d(LOG_TAG, "installationAuthToken = ${it.result.token}")
             }
         }
