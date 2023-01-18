@@ -60,6 +60,10 @@ class MainActivity : AppCompatActivity(), CartHandler {
                     val i = Intent(applicationContext, MainActivity::class.java)
                     startActivity(i)
                 }
+                R.id.nav_ads -> {
+                    val i = Intent(applicationContext, AdsActivity::class.java)
+                    startActivity(i)
+                }
                 else -> {}
             }
             true
