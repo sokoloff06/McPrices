@@ -14,6 +14,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.google.firebaseengage.cart.CartAdapter
@@ -21,6 +22,7 @@ import com.google.firebaseengage.cart.CartFragment
 import com.google.firebaseengage.cart.CartHandler
 import com.google.firebaseengage.catalog.CatalogFragment
 import com.google.firebaseengage.entities.Cart
+import java.util.UUID
 
 class MainActivity : AppCompatActivity(), CartHandler {
     private lateinit var navigationView: NavigationView
@@ -38,6 +40,7 @@ class MainActivity : AppCompatActivity(), CartHandler {
         // Firebase Remote Config
         // RC Demo 1: set up remote config
         setUpRemoteConfig()
+        FirebaseAnalytics.getInstance(this).setUserId(UUID.randomUUID().toString());
         navDrawer = findViewById(R.id.drawer_layout)
         navigationView = findViewById(R.id.nav_view)
         swipeRefreshLayout = findViewById(R.id.swiperefresh)
@@ -127,6 +130,7 @@ class MainActivity : AppCompatActivity(), CartHandler {
                 .build()
         remoteConfig.setConfigSettingsAsync(configSettings)
         remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults)
+        // Optionally set defaults in code
 //        remoteConfig.setDefaultsAsync(
 //            mapOf(
 //                KEY_PRICE_TAG_COLOR to "#2D3A4A",

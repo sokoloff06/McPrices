@@ -137,7 +137,7 @@ public class CatalogFragment extends Fragment implements ProductsDisplayer {
 
     @Override
     public void load() {
-        // RC Demo 2: Applying price tag color
+        //  2: Accessing price tag color value
         priceColor = remoteConfig.getString(KEY_PRICE_TAG_COLOR);
 //        Map allParams = remoteConfig.getAll();
         productListAdapter.loadProducts(priceColor);
