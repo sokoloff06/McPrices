@@ -1,4 +1,4 @@
-package com.google.firebaseengage
+package com.google.firebaseengage.firebase
 
 import android.Manifest
 import android.content.Intent
@@ -16,6 +16,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.installations.FirebaseInstallations
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebaseengage.MainActivity.Companion.LOG_TAG
+import com.google.firebaseengage.R
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -149,7 +150,7 @@ class UtilActivity : AppCompatActivity() {
         }
     }
 
-    // RC Demo FCM Token
+    // RC Demo 4: FCM Token
     private fun getToken() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {

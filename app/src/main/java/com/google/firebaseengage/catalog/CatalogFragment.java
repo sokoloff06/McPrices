@@ -63,6 +63,7 @@ public class CatalogFragment extends Fragment implements ProductsDisplayer {
         productListRecyclerView.setLayoutManager(layoutManager);
         //TODO: BUG! Sometimes No adapter attached; skipping layout
         productListRecyclerView.setAdapter(productListAdapter);
+        // RC Demo 2: Accessing background color value
         String color = remoteConfig.getString(KEY_BG_COLOR);
         rootView.setBackgroundColor(Color.parseColor(color));
         Log.d(LOG_TAG, "Applied bg_color of " + color + " from Remote Config");
@@ -137,7 +138,7 @@ public class CatalogFragment extends Fragment implements ProductsDisplayer {
 
     @Override
     public void load() {
-        //  2: Accessing price tag color value
+        // RC Demo 2: Accessing price tag color value
         priceColor = remoteConfig.getString(KEY_PRICE_TAG_COLOR);
 //        Map allParams = remoteConfig.getAll();
         productListAdapter.loadProducts(priceColor);

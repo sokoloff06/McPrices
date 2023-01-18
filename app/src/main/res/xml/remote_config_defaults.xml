@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <defaults>
   <entry>
+    <!--    black -->
     <key>price_tag</key>
-<!--    dark blue-->
-    <value>#2D3A4A</value>
+    <value>#000000</value>
   </entry>
   <entry>
+    <!--    white -->
     <key>bg_color</key>
-<!--    white -->
     <value>#FFFFFF</value>
   </entry>
   <entry>
-    <key>btn_buy_color</key>
     <!--    white -->
+    <key>btn_buy_color</key>
     <value>#FFFFFF</value>
   </entry>
 </defaults>

@@ -22,6 +22,7 @@ import com.google.firebaseengage.cart.CartFragment
 import com.google.firebaseengage.cart.CartHandler
 import com.google.firebaseengage.catalog.CatalogFragment
 import com.google.firebaseengage.entities.Cart
+import com.google.firebaseengage.firebase.UtilActivity
 import java.util.UUID
 
 class MainActivity : AppCompatActivity(), CartHandler {
