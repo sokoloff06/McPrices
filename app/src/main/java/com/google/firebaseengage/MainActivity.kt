@@ -1,3 +1,8 @@
+/*
+ * **This is not an officially supported Google product.***
+ * Copyright 2021 Google LLC. This solution, including any related sample code or data, is made available on an “as is,” “as available,” and “with all faults” basis, solely for illustrative purposes, and without warranty or representation of any kind. This solution is experimental, unsupported and provided solely for your convenience. Your use of it is subject to your agreements with Google, as applicable, and may constitute a beta feature as defined under those agreements. To the extent that you make any data available to Google in connection with your use of the solution, you represent and warrant that you have all necessary and appropriate rights, consents and permissions to permit Google to use and process that data. By using any portion of this solution, you acknowledge, assume and accept all risks, known and unknown, associated with its usage, including with respect to your deployment of any portion of this solution in your systems, or usage in connection with your business, if at all.
+ */
+
 package com.google.firebaseengage
 
 
@@ -23,7 +28,7 @@ import com.google.firebaseengage.cart.CartHandler
 import com.google.firebaseengage.catalog.CatalogFragment
 import com.google.firebaseengage.entities.Cart
 import com.google.firebaseengage.firebase.UtilActivity
-import java.util.UUID
+import java.util.*
 
 class MainActivity : AppCompatActivity(), CartHandler {
     private lateinit var navigationView: NavigationView
@@ -102,8 +107,7 @@ class MainActivity : AppCompatActivity(), CartHandler {
                 Log.d("ENGAGE-DEBUG", "Remote Config fetched and active")
             } else {
                 Log.w(
-                    "ENGAGE-DEBUG", "WARNING: minFetchInterval didn't pass or " +
-                            "Config didn't change. Using cached values!"
+                    "ENGAGE-DEBUG", "WARNING: minFetchInterval didn't pass or " + "Config didn't change. Using cached values!"
                 )
             }
             onRemoteConfigComplete()
@@ -125,10 +129,7 @@ class MainActivity : AppCompatActivity(), CartHandler {
     private fun setUpRemoteConfig() {
         remoteConfig = FirebaseRemoteConfig.getInstance()
         // Use only for development. See https://firebase.google.com/docs/remote-config/get-started?platform=android#throttling
-        val configSettings =
-            FirebaseRemoteConfigSettings.Builder()
-                .setMinimumFetchIntervalInSeconds(5)
-                .build()
+        val configSettings = FirebaseRemoteConfigSettings.Builder().setMinimumFetchIntervalInSeconds(5).build()
         remoteConfig.setConfigSettingsAsync(configSettings)
         remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults)
         // Optionally set defaults in code
